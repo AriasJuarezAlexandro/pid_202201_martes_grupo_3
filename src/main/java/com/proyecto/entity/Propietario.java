@@ -30,6 +30,8 @@ public class Propietario {
 	private int idDep;
 	/*@ManyToOne
 	@JoinColumn(name = "idDep")
-	private Departamento departamento;
+	private Departamento departamento;f
 	*/
+	
+	
 }
