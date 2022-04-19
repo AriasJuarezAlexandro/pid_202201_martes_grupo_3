@@ -14,24 +14,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TB_PROPIETARIO")
+@Table(name = "TB_MASCOTA")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Propietario {
+public class Mascota {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int idMasc;
+	private String nomMasc;
 	private int idPro;
-	private String nomPro;
-	private String apePro;
-	private String dniPro;
-	private String telPro;
-	/*private int idDep;*/
-	@ManyToOne
-	@JoinColumn(name = "idDep")
-	private Departamento departamento;
-	
-	
-	
+	/*
+	 @ManyToOne
+	@JoinColumn(name = "idPro")
+	private Propietario propietario;
+
+	 * */	
 }
