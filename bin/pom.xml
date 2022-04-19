@@ -8,7 +8,7 @@
 		<version>2.6.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.proyecto</groupId>
+	<groupId>com.example</groupId>
 	<artifactId>pid_202201_martes_grupo_3</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>pid_202201_martes_grupo_3</name>
