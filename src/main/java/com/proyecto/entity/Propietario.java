@@ -27,11 +27,11 @@ public class Propietario {
 	private String apePro;
 	private String dniPro;
 	private String telPro;
-	private int idDep;
-	/*@ManyToOne
+	/*private int idDep;*/
+	@ManyToOne
 	@JoinColumn(name = "idDep")
-	private Departamento departamento;f
-	*/
+	private Departamento departamento;
+	
 	
 	
 }
