@@ -24,11 +24,10 @@ public class Mascota {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idMasc;
 	private String nomMasc;
-	private int idPro;
-	/*
+	/*private int idPro;*/
+	
 	 @ManyToOne
 	@JoinColumn(name = "idPro")
 	private Propietario propietario;
 
-	 * */	
 }

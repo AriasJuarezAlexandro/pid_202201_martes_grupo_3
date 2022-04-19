@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.entity.Departamento;
 import com.proyecto.entity.EdificioDepartamento;
 import com.proyecto.entity.EstadoDepartamento;
+import com.proyecto.entity.Propietario;
 import com.proyecto.entity.TipoDepartamento;
 import com.proyecto.service.DepartamentoService;
 import com.proyecto.service.EdificioDepartamentoService;
 import com.proyecto.service.EstadoDepartamentoService;
+import com.proyecto.service.MascotaService;
+import com.proyecto.service.PropietarioService;
 import com.proyecto.service.TipoDepartamentoService;
 import com.proyecto.util.AppSettings;
 
@@ -33,6 +36,15 @@ public class UtilController {
 	private TipoDepartamentoService tipoDepartamentoService;
 	@Autowired
 	private DepartamentoService departamentoService;
+	@Autowired
+	private PropietarioService propietarioService;
+	
+	@GetMapping("/listaPropietario")
+	@ResponseBody
+	public List<Propietario> listaPropietario(){
+		return propietarioService.listaPropietario();
+	}
+	
 	
 	@GetMapping("/listaDepartamento")
 	@ResponseBody
