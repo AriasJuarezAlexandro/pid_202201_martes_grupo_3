@@ -17,7 +17,9 @@ import com.proyecto.util.AppSettings;
 
 
 @RestController
-@RequestMapping("/url/departamento")
+
+@RequestMapping("/rest/departamento")
+
 @CrossOrigin(origins = AppSettings.URL_CROSS_ORIGIN)
 public class DepartamentoController {
 	
@@ -27,7 +29,7 @@ public class DepartamentoController {
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<HashMap<String, Object>> registrarDepartamento(@RequestBody Departamento obj){
-		HashMap<String, Object> salida = new HashMap<String, Object>();
+		HashMap<String, Object> salida = new HashMap<>();
 		try {
 			obj.setIdDep(0);
 			Departamento objSalida = departamentoService.registrarDepartamento(obj);
