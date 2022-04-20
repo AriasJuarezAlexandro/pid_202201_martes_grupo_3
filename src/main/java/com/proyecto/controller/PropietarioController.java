@@ -2,7 +2,6 @@ package com.proyecto.controller;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.entity.Propietario;
 import com.proyecto.service.PropietarioService;
+import com.proyecto.util.AppSettings;
 
 @RestController
-@RequestMapping("/rest/propietario")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/url/propietario")
+@CrossOrigin(origins = AppSettings.URL_CROSS_ORIGIN)
 public class PropietarioController {
 	
 	@Autowired
@@ -34,9 +34,10 @@ public class PropietarioController {
 	
 	@PostMapping
 	@ResponseBody
-	public  ResponseEntity<Map<String, Object>> insertaModalidad(@RequestBody Propietario obj){
-		Map<String, Object> salida = new HashMap<>();
+	public  ResponseEntity<HashMap<String, Object>> insertaModalidad(@RequestBody Propietario obj){
+		HashMap<String, Object> salida = new HashMap<String, Object>();
 		try {
+			obj.setIdPro(0);
 			Propietario objSalida = service.insertaActualizaPropietario(obj);
 			if (objSalida == null) {
 				salida.put("mensaje", "No se registró, consulte con el administrador.");
