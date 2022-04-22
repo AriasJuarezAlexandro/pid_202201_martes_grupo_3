@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.entity.Propietario;
 import com.proyecto.service.PropietarioService;
+import com.proyecto.util.AppSettings;
 
 @RestController
-@RequestMapping("/rest/propietario")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/url/propietario")
+@CrossOrigin(origins = AppSettings.URL_CROSS_ORIGIN)
 public class PropietarioController {
 	
 	@Autowired
@@ -34,9 +35,10 @@ public class PropietarioController {
 	
 	@PostMapping
 	@ResponseBody
-	public  ResponseEntity<Map<String, Object>> insertaModalidad(@RequestBody Propietario obj){
+	public  ResponseEntity<Map<String, Object>> registrarPropietario(@RequestBody Propietario obj){
 		Map<String, Object> salida = new HashMap<>();
 		try {
+			obj.setIdPro(0);
 			Propietario objSalida = service.insertaActualizaPropietario(obj);
 			if (objSalida == null) {
 				salida.put("mensaje", "No se registró, consulte con el administrador.");

@@ -18,28 +18,24 @@ import com.proyecto.entity.Mascota;
 import com.proyecto.entity.Propietario;
 import com.proyecto.service.MascotaService;
 import com.proyecto.service.PropietarioService;
+import com.proyecto.util.AppSettings;
 
 @RestController
-@RequestMapping("/rest/mascota")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/url/mascota")
+@CrossOrigin(origins = AppSettings.URL_CROSS_ORIGIN)
 public class MascotaController {
 
 	@Autowired
-	private MascotaService service;
+	private MascotaService mascotaService;
 	
-	@GetMapping
-	@ResponseBody
-	public ResponseEntity<List<Mascota>> listaMascota(){
-		List<Mascota> lista = service.listaMascota();
-		return ResponseEntity.ok(lista);
-	}
 	
 	@PostMapping
 	@ResponseBody
-	public  ResponseEntity<Map<String, Object>> insertaModalidad(@RequestBody Mascota obj){
+	public  ResponseEntity<Map<String, Object>> registrarMascota(@RequestBody Mascota obj){
 		Map<String, Object> salida = new HashMap<>();
 		try {
-			Mascota objSalida = service.insertaActualizaMascota(obj);
+			obj.setIdMasc(0);
+			Mascota objSalida = mascotaService.insertaActualizaMascota(obj);
 			if (objSalida == null) {
 				salida.put("mensaje", "No se registró, consulte con el administrador.");
 			}else {
