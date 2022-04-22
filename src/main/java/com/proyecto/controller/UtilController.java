@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.entity.Departamento;
 import com.proyecto.entity.EdificioDepartamento;
 import com.proyecto.entity.EstadoDepartamento;
+import com.proyecto.entity.Mascota;
 import com.proyecto.entity.Propietario;
 import com.proyecto.entity.TipoDepartamento;
 import com.proyecto.service.DepartamentoService;
@@ -38,6 +39,8 @@ public class UtilController {
 
 	@Autowired
 	private PropietarioService propietarioService;
+	@Autowired
+	private MascotaService mascotaService;
 	
 	@GetMapping("/listaPropietario")
 	@ResponseBody
@@ -45,6 +48,11 @@ public class UtilController {
 		return propietarioService.listaPropietario();
 	}
 	
+	@GetMapping("/listaMascota")
+	@ResponseBody
+	public List<Mascota> listaMascota(){
+		return mascotaService.listaMascota();
+	}
 	
 	@GetMapping("/listaEdificioDepartamento")
 	@ResponseBody

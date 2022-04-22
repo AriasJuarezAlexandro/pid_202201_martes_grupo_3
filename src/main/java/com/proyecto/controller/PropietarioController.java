@@ -32,10 +32,11 @@ public class PropietarioController {
 		return ResponseEntity.ok(lista);
 	}
 	
+	
 	@PostMapping
 	@ResponseBody
-	public  ResponseEntity<HashMap<String, Object>> insertaModalidad(@RequestBody Propietario obj){
-		HashMap<String, Object> salida = new HashMap<String, Object>();
+	public  ResponseEntity<Map<String, Object>> registrarPropietario(@RequestBody Propietario obj){
+		Map<String, Object> salida = new HashMap<>();
 		try {
 			obj.setIdPro(0);
 			Propietario objSalida = service.insertaActualizaPropietario(obj);
