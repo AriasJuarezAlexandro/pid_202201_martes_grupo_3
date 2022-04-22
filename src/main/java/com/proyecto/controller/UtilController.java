@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +35,8 @@ public class UtilController {
 	@Autowired
 	private TipoDepartamentoService tipoDepartamentoService;
 	@Autowired
-	private DepartamentoService departamentoService;
+	private DepartamentoService DepSer;
+
 	@Autowired
 	private PropietarioService propietarioService;
 	@Autowired
@@ -52,12 +52,6 @@ public class UtilController {
 	@ResponseBody
 	public List<Mascota> listaMascota(){
 		return mascotaService.listaMascota();
-	}
-	
-	@GetMapping("/listaDepartamento")
-	@ResponseBody
-	public List<Departamento> listaDepartamento(){
-		return departamentoService.listaDepartamento();
 	}
 	
 	@GetMapping("/listaEdificioDepartamento")
@@ -76,6 +70,12 @@ public class UtilController {
 	@ResponseBody
 	public List<TipoDepartamento> listaTipoDepartamento(){
 		return tipoDepartamentoService.listaTipoDepartamento();
+	}
+	
+	@GetMapping("/listaDepartamento")
+	@ResponseBody
+	public List<Departamento> listaDepartamento() {
+		return DepSer.listaDepartamento();
 	}
 
 }

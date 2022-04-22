@@ -1,9 +1,6 @@
 package com.proyecto.controller;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +17,7 @@ import com.proyecto.util.AppSettings;
 
 
 @RestController
-@RequestMapping("/rest/departamento")
+@RequestMapping("/url/departamento") 
 @CrossOrigin(origins = AppSettings.URL_CROSS_ORIGIN)
 public class DepartamentoController {
 	
@@ -29,9 +26,10 @@ public class DepartamentoController {
 
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> registrarDepartamento(@RequestBody Departamento obj){
-		Map<String, Object> salida = new HashMap<>();
+	public ResponseEntity<HashMap<String, Object>> registrarDepartamento(@RequestBody Departamento obj){
+		HashMap<String, Object> salida = new HashMap<>();
 		try {
+			obj.setIdDep(0);
 			Departamento objSalida = departamentoService.registrarDepartamento(obj);
 			if (objSalida == null) {
 				salida.put("mensaje", "Error al registrar");
