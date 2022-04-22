@@ -33,6 +33,7 @@ public class PropietarioController {
 		return ResponseEntity.ok(lista);
 	}
 	
+	
 	@PostMapping
 	@ResponseBody
 	public  ResponseEntity<Map<String, Object>> registrarPropietario(@RequestBody Propietario obj){
