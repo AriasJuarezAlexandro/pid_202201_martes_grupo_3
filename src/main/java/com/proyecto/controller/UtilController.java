@@ -34,10 +34,8 @@ public class UtilController {
 	@Autowired
 	private TipoDepartamentoService tipoDepartamentoService;
 	@Autowired
-
 	private DepartamentoService DepSer;
 
-	private DepartamentoService departamentoService;
 	@Autowired
 	private PropietarioService propietarioService;
 	

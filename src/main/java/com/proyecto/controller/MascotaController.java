@@ -18,10 +18,11 @@ import com.proyecto.entity.Mascota;
 import com.proyecto.entity.Propietario;
 import com.proyecto.service.MascotaService;
 import com.proyecto.service.PropietarioService;
+import com.proyecto.util.AppSettings;
 
 @RestController
-@RequestMapping("/rest/mascota")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/url/mascota")
+@CrossOrigin(origins = AppSettings.URL_CROSS_ORIGIN)
 public class MascotaController {
 
 	@Autowired

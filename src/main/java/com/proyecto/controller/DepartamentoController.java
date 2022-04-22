@@ -17,9 +17,7 @@ import com.proyecto.util.AppSettings;
 
 
 @RestController
-
-@RequestMapping("/rest/departamento")
-
+@RequestMapping("/url/departamento") 
 @CrossOrigin(origins = AppSettings.URL_CROSS_ORIGIN)
 public class DepartamentoController {
 	
