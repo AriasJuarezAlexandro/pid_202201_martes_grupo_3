@@ -23,6 +23,9 @@ public class Visitante {
 	private int idVis;
 	private String nomVis;
 	private String apeVis;
+	private String dniVis;
+	private String telVis;
+	private String dirVis;
 	
 	
 	/*soon*/
