@@ -31,8 +31,8 @@ public class MascotaController {
 	
 	@PostMapping
 	@ResponseBody
-	public  ResponseEntity<Map<String, Object>> registrarMascota(@RequestBody Mascota obj){
-		Map<String, Object> salida = new HashMap<>();
+	public ResponseEntity<HashMap<String, Object>> registrarMascota(@RequestBody Mascota obj){
+		HashMap<String, Object> salida = new HashMap<>();
 		try {
 			obj.setIdMasc(0);
 			Mascota objSalida = mascotaService.insertaActualizaMascota(obj);

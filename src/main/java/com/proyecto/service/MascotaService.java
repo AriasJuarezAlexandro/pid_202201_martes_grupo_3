@@ -5,6 +5,6 @@ import java.util.List;
 import com.proyecto.entity.Mascota;
 
 public interface MascotaService {
-	public List<Mascota> listaMascota();
-	public Mascota insertaActualizaMascota(Mascota obj);
+	public abstract List<Mascota> listaMascota();
+	public abstract Mascota insertaActualizaMascota(Mascota obj);
 }

@@ -6,7 +6,7 @@ import com.proyecto.entity.Ocupante;
 import com.proyecto.entity.Visitante;
 
 public interface OcupanteService {
-	public List<Ocupante> listaOcupantes();
-	public Ocupante insertaActualizaOcupantes(Ocupante obj);
+	public abstract List<Ocupante> listaOcupantes();
+	public abstract Ocupante insertaActualizaOcupantes(Ocupante obj);
 
 }

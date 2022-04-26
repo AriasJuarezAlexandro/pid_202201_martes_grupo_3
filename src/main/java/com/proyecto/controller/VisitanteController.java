@@ -37,8 +37,8 @@ public class VisitanteController {
 	
 	@PostMapping
 	@ResponseBody
-	public  ResponseEntity<Map<String, Object>> registrarVisitante(@RequestBody Visitante obj){
-		Map<String, Object> salida = new HashMap<>();
+	public  ResponseEntity<HashMap<String, Object>> registrarVisitante(@RequestBody Visitante obj){
+		HashMap<String, Object> salida = new HashMap<>();
 		try {
 			obj.setIdVisitante(0);
 			Visitante objSalida = service.insertaActualizaVisitante(obj);

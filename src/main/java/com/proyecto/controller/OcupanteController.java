@@ -29,8 +29,8 @@ public class OcupanteController {
 	
 	@PostMapping
 	@ResponseBody
-	public  ResponseEntity<Map<String, Object>> registrarOcupante(@RequestBody Ocupante obj){
-		Map<String, Object> salida = new HashMap<>();
+	public  ResponseEntity<HashMap<String, Object>> registrarOcupante(@RequestBody Ocupante obj){
+		HashMap<String, Object> salida = new HashMap<>();
 		try {
 			obj.setIdOcu(0);
 			Ocupante objSalida = ocupanteService.insertaActualizaOcupantes(obj);
