@@ -35,7 +35,7 @@ public class Ocupante {
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date fecnacOcu;
-	private String dniOcuvc;
+	private String dniOcu;
 	private String teleOcu;
 	@ManyToOne
 	@JoinColumn(name = "idPro")

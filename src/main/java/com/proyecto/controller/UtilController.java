@@ -13,6 +13,7 @@ import com.proyecto.entity.Departamento;
 import com.proyecto.entity.EdificioDepartamento;
 import com.proyecto.entity.EstadoDepartamento;
 import com.proyecto.entity.Mascota;
+import com.proyecto.entity.Ocupante;
 import com.proyecto.entity.Propietario;
 import com.proyecto.entity.TipoDepartamento;
 import com.proyecto.entity.Visitante;
@@ -20,6 +21,7 @@ import com.proyecto.service.DepartamentoService;
 import com.proyecto.service.EdificioDepartamentoService;
 import com.proyecto.service.EstadoDepartamentoService;
 import com.proyecto.service.MascotaService;
+import com.proyecto.service.OcupanteService;
 import com.proyecto.service.PropietarioService;
 import com.proyecto.service.TipoDepartamentoService;
 import com.proyecto.service.VisitanteService;
@@ -46,6 +48,14 @@ public class UtilController {
 	
 	@Autowired
 	private VisitanteService visitanteService;
+	@Autowired
+	private OcupanteService ocupanteService;
+	
+	@GetMapping("/listaOcupante")
+	@ResponseBody
+	public List<Ocupante> listaOcupante(){
+		return ocupanteService.listaOcupantes();
+	}
 	
 	@GetMapping("/listaPropietario")
 	@ResponseBody
