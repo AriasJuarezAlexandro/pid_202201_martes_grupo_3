@@ -19,7 +19,6 @@ import com.proyecto.entity.Visitante;
 import com.proyecto.service.VisitanteService;
 import com.proyecto.util.AppSettings;
 
-/*Visitante controller again uploading as a branch haha*/
 
 @RestController
 @RequestMapping("/url/visitante") 
@@ -38,7 +37,7 @@ public class VisitanteController {
 	
 	@PostMapping
 	@ResponseBody
-	public  ResponseEntity<Map<String, Object>> registrarPropietario(@RequestBody Visitante obj){
+	public  ResponseEntity<Map<String, Object>> registrarVisitante(@RequestBody Visitante obj){
 		Map<String, Object> salida = new HashMap<>();
 		try {
 			obj.setIdVisitante(0);
