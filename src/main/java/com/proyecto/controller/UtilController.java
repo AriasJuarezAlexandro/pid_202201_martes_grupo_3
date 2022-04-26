@@ -15,12 +15,14 @@ import com.proyecto.entity.EstadoDepartamento;
 import com.proyecto.entity.Mascota;
 import com.proyecto.entity.Propietario;
 import com.proyecto.entity.TipoDepartamento;
+import com.proyecto.entity.Visitante;
 import com.proyecto.service.DepartamentoService;
 import com.proyecto.service.EdificioDepartamentoService;
 import com.proyecto.service.EstadoDepartamentoService;
 import com.proyecto.service.MascotaService;
 import com.proyecto.service.PropietarioService;
 import com.proyecto.service.TipoDepartamentoService;
+import com.proyecto.service.VisitanteService;
 import com.proyecto.util.AppSettings;
 
 @RestController
@@ -41,6 +43,9 @@ public class UtilController {
 	private PropietarioService propietarioService;
 	@Autowired
 	private MascotaService mascotaService;
+	
+	@Autowired
+	private VisitanteService visitanteService;
 	
 	@GetMapping("/listaPropietario")
 	@ResponseBody
@@ -78,4 +83,9 @@ public class UtilController {
 		return DepSer.listaDepartamento();
 	}
 
+	@GetMapping("/listaVisitante")
+	@ResponseBody
+	public List<Visitante> listaVisitante(){
+		return visitanteService.listaVisitante();
+	}
 }
