@@ -39,7 +39,7 @@ public class VisitanteController {
 	public  ResponseEntity<Map<String, Object>> registrarPropietario(@RequestBody Visitante obj){
 		Map<String, Object> salida = new HashMap<>();
 		try {
-			obj.setIdVis(0);
+			obj.setIdVisitante(0);
 			Visitante objSalida = service.insertaActualizaVisitante(obj);
 			if (objSalida == null) {
 				salida.put("mensaje", "No se registró, consulte con el administrador.");

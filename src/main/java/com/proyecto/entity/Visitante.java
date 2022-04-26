@@ -20,12 +20,12 @@ import lombok.Setter;
 public class Visitante {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int idVis;
-	private String nomVis;
-	private String apeVis;
+	private int idVisitante;
+	private String nomVisitante;
+	private String apellVisitante;
 	private String dniVis;
-	private String telVis;
-	private String dirVis;
+	private String teleVis;
+	private String direccionVis;
 	
 	
 	/*soon*/
