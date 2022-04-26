@@ -5,7 +5,7 @@ import java.util.List;
 import com.proyecto.entity.Propietario;
 
 public interface PropietarioService {
-	public List<Propietario> listaPropietario();
-	public Propietario insertaActualizaPropietario(Propietario obj);
+	public abstract List<Propietario> listaPropietario();
+	public abstract Propietario insertaActualizaPropietario(Propietario obj);
 
 }
