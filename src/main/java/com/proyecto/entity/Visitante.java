@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+/*visitante class I forgot to upload this as a branch*/
 @Entity
 @Table(name = "TB_VISITANTE")
 @Getter

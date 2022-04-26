@@ -19,6 +19,8 @@ import com.proyecto.entity.Visitante;
 import com.proyecto.service.VisitanteService;
 import com.proyecto.util.AppSettings;
 
+/*Visitante controller again uploading as a branch haha*/
+
 @RestController
 @RequestMapping("/url/visitante") 
 @CrossOrigin(origins = AppSettings.URL_CROSS_ORIGIN)
