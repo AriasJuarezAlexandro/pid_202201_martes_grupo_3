@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8">
+<title>Insert title here</title>
+</head>
+<body>
+	Menu works!.
+	<span sec:authorize="isAuthenticated()">
+	
+	<a th:href="@{/logout}">Cerrar Sesion</a>
+	
+	</span>
+</body>
+</html>
