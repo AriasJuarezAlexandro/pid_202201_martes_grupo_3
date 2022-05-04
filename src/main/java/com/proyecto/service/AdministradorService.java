@@ -1,9 +1,9 @@
 package com.proyecto.service;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import com.proyecto.entity.Administrador;
 
-public interface AdministradorService extends UserDetailsService{
-	public abstract Administrador registrarAdministrador(Administrador administrador);
+public interface AdministradorService {
+	public abstract Administrador registrarAdministrador(Administrador administrador) throws Exception;
+	public abstract Administrador buscarAdministradorPorDni(String dni) throws Exception;
+	public abstract Administrador buscarAdministradorPorEmail(String email) throws Exception;
 }

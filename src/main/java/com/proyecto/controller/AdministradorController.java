@@ -1,42 +1,34 @@
 package com.proyecto.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyecto.entity.Administrador;
 import com.proyecto.service.AdministradorService;
+import com.proyecto.util.AppSettings;
 
 @Controller
+@RequestMapping(value = AppSettings.URL_ADMINISTRADOR)
 public class AdministradorController {
-	
+
 	@Autowired
 	private AdministradorService administradorService;
 	
-	
-	//@Autowired
-	//private BCryptPasswordEncoder byBCryptPasswordEncoder;
-	
-	@GetMapping(value = {"/login" , "" , "/"} )
-	public String iniciarSesion() {
-		return "login";
+	@RequestMapping(value = "/menu")
+	public String menuPage(Authentication auth , HttpSession session) {
+		System.out.println("Entrando a menu");
+		String nomUsuario = auth.getName();
+		System.out.println(nomUsuario);
+		try {
+			Administrador bean = administradorService.buscarAdministradorPorEmail(nomUsuario);
+			session.setAttribute("user", bean);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "menu";
 	}
-	
-	@GetMapping("/registro")
-	public String mostrarFormularioDeRegistr(@ModelAttribute("administrador") Administrador obj) {
-		System.out.println("Entra a pagina");
-		return "registro";
-	}
-	
-	@PostMapping("/registrarAdministrador")
-	public String registroAdministrador(@ModelAttribute("administrador") Administrador obj) {
-		System.out.println("Registra");
-		administradorService.registrarAdministrador(obj);
-		return "redirect:/registro?exito";
-	}
-	
 }
