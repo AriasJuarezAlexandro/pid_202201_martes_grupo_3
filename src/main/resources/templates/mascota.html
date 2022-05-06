@@ -1,0 +1,247 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+	integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+	crossorigin="anonymous">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<title>Mascotas</title>
+</head>
+
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a class="navbar-brand" href="#">Inicio</a>
+
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarNav" aria-controls="navbarNav"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+
+
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link" th:href="@{/administrador/edificio}">Edificio</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/administrador/departamento}">Departamento</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/administrador/propietario}">Propietario</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/administrador/mascota}">Mascotas</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/administrador/ocupante}">Ocupantes</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/administrador/visita}">Visita</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/administrador/visitante}">Visitante</a></li>
+			</ul>
+
+
+		</div>
+
+		<div class="form-inline my-2 my-lg-0">
+			<div class="border rounded p-1 px-2 mr-2">
+				<i class="fas fa-user text-white text-center"></i> <span
+					th:text="${session.user.nombres}" class="text-white bg-dark mx-2"></span>
+			</div>
+
+			<a class="btn btn-outline-danger my-2 my-sm-0" type="submit"
+				th:href="@{/logout}">Cerrar Sesion</a>
+		</div>
+	</nav>
+
+	<!-- Formulario-->
+
+	<div class="container-fluid">
+		<button type="button" class="btn btn-primary mt-2 ml-2"
+			data-toggle="modal" data-target="#mascotaModal">Registrar
+			Mascota</button>
+
+		<!-- Modal Registro -->
+		<div class="modal fade" id="mascotaModal" tabindex="-1"
+			role="dialog" aria-labelledby="mascotaModal" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="departamentoModal">Registro de
+							mascota</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- Formulario -->
+						<form th:action="@{/administrador/registrarMascota}"
+							method="post" th:object="${mascota}">
+							<div class="form-group">
+								<label for="exampleInputText">Nombre</label> <input type="text"
+									class="form-control" id="metros" aria-describedby="metrosHelp"
+									placeholder="Ingrese el nombre de la mascota]"
+									th:field="*{nombre}" required minlength="4" maxlength="20" 
+								pattern="[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+">
+							</div>
+							<div class="form-group">
+								<label for="exampleInputText">Especie</label> <input
+									type="text" class="form-control" id="direccion"
+									aria-describedby="direccionHelp"
+									placeholder="Ingrese la especie de la mascota"
+									th:field="*{especie}" required minlength="3" maxlength="25" 
+								pattern="[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+">
+							</div>
+							<div class="form-group">
+								<label for="exampleInputText">Raza</label> <input
+									type="text" class="form-control" id="direccion"
+									aria-describedby="dniHelp"
+									placeholder="Ingrese la raza de la mascota"
+									th:field="*{raza}" required minlength="4" maxlength="25" 
+								pattern="[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+">
+							</div>
+
+							<div class="form-group">
+								<label for="inputState">Propietario</label> <select id="inputState"
+									class="form-control" th:field="*{propietario}" required>
+									<option value="">[Seleccione Propietario]</option>
+									<option th:each="propietario: ${propietarios}"
+										th:text="${propietario.nombres}" 
+										th:value="${propietario.idPropietario}"></option>
+								</select>
+							</div>
+							<button type="submit" class="btn btn-primary">Registrar</button>
+						</form>
+						<!-- Formulario END -->
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Cancelar</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Tabla  -->
+		<div class="container-fluid p-2">
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Id</th>
+						<th scope="col">Nombre</th>
+						<th scope="col">Especie</th>
+						<th scope="col">Raza</th>
+						<th scope="col">Propietario</th>
+						<th scope="col">Administrador</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="bean:${mascotas}">
+						<td scope="row" th:text="${bean.idMascota}"></td>
+						<td scope="row" th:text="${bean.nombre}"></td>
+						<td scope="row" th:text="${bean.especie}"></td>
+						<td scope="row" th:text="${bean.raza}"></td>
+						<td scope="row" th:text="${bean.propietario.nombres + ' ' + bean.propietario.apellidos}"></td>
+						<td scope="row" th:text="${bean.administrador.nombres + ' ' + bean.administrador.apellidos}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- Formulario-End -->
+
+	<!-- Optional JavaScript; choose one of the two! -->
+
+	<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+		crossorigin="anonymous"></script>
+
+	<!-- Toast -->
+	
+	<script src="https://code.jquery.com/jquery-3.6.0.js"
+		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+	<script th:inline="javascript" th:if="${mensaje!=null}">
+		let msg;
+		msg = /*[[${mensaje}]]*/null;
+
+		toastr.success(msg, toastr.options = {
+			"closeButton" : true,
+			"debug" : false,
+			"newestOnTop" : false,
+			"progressBar" : true,
+			"positionClass" : "toast-top-right",
+			"preventDuplicates" : true,
+			"onclick" : null,
+			"showDuration" : "100",
+			"hideDuration" : "500",
+			"timeOut" : "3500",
+			"extendedTimeOut" : "1000",
+			"showEasing" : "swing",
+			"hideEasing" : "linear",
+			"showMethod" : "fadeIn",
+			"hideMethod" : "fadeOut"
+		});
+	</script>
+
+	<script th:inline="javascript" th:if="${advertencia!=null}">
+		let msg;
+		msg = /*[[${advertencia}]]*/null;
+
+		toastr.warning(msg, toastr.options = {
+			"closeButton" : true,
+			"debug" : false,
+			"newestOnTop" : false,
+			"progressBar" : true,
+			"positionClass" : "toast-top-right",
+			"preventDuplicates" : true,
+			"onclick" : null,
+			"showDuration" : "100",
+			"hideDuration" : "500",
+			"timeOut" : "3500",
+			"extendedTimeOut" : "1000",
+			"showEasing" : "swing",
+			"hideEasing" : "linear",
+			"showMethod" : "fadeIn",
+			"hideMethod" : "fadeOut"
+		});
+	</script>
+
+
+	<script th:inline="javascript" th:if="${error!=null}">
+		let msg;
+		msg = /*[[${error}]]*/null;
+
+		toastr.error(msg, toastr.options = {
+			"closeButton" : true,
+			"debug" : false,
+			"newestOnTop" : false,
+			"progressBar" : true,
+			"positionClass" : "toast-top-right",
+			"preventDuplicates" : true,
+			"onclick" : null,
+			"showDuration" : "100",
+			"hideDuration" : "500",
+			"timeOut" : "3500",
+			"extendedTimeOut" : "1000",
+			"showEasing" : "swing",
+			"hideEasing" : "linear",
+			"showMethod" : "fadeIn",
+			"hideMethod" : "fadeOut"
+		});
+	</script>
+</body>
+
+</html>
