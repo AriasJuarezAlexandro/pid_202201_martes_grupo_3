@@ -12,22 +12,17 @@
 	integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
 	crossorigin="anonymous">
 
-<!--  FontAwesome  -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" th:href="@{/navbar.css}">
-
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<title>Login</title>
+	
+	<!--  FontAwesome  -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" th:href="@{/navbar.css}">
+<title>Propietario</title>
 </head>
 
 <body>
-
-	<!-- BODY -->
-
+	
 	<!-- NAVBAR -->
 	
 	<nav class="navbar navbar-expand-custom navbar-mainbg">
@@ -41,7 +36,7 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{edificio}"><i class="fas fa-building"></i>Edificio</a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" th:href="@{departamento}"><i class="fas fa-house"></i>Departamento</a>
                 </li>
                 <li class="nav-item">
@@ -50,7 +45,7 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{mascota}"><i class="fas fa-paw"></i>Mascota</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" th:href="@{ocupante}"><i class="fa-solid fa-people-roof"></i>Ocupante</a>
                 </li>
                 <li class="nav-item">
@@ -70,21 +65,22 @@
     </nav>
 	
 	<!-- NAVBAR END -->
-	
+
+	<!-- Formulario-->
 
 	<div class="container-fluid">
 		<button type="button" class="btn btn-primary mt-2 ml-2"
-			data-toggle="modal" data-target="#departamentoModal">Registrar
-			Departamento</button>
+			data-toggle="modal" data-target="#ocupanteModal">Registrar
+			Ocupante</button>
 
 		<!-- Modal Registro -->
-		<div class="modal fade" id="departamentoModal" tabindex="-1"
-			role="dialog" aria-labelledby="departamentoModal" aria-hidden="true">
+		<div class="modal fade" id="ocupanteModal" tabindex="-1"
+			role="dialog" aria-labelledby="ocupanteModal" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="departamentoModal">Registro de
-							departamento</h5>
+							Ocupante</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -92,30 +88,51 @@
 					</div>
 					<div class="modal-body">
 						<!-- Formulario -->
-						<form th:action="@{/administrador/registrarDepartamento}"
-							method="post" th:object="${departamento}">
+						<form th:action="@{/administrador/registrarOcupante}"
+							method="post" th:object="${ocupante}">
 							<div class="form-group">
-								<label for="exampleInputText">Metros</label> <input type="number"
+								<label for="exampleInputText">Nombres</label> <input type="text"
 									class="form-control" id="metros" aria-describedby="metrosHelp"
-									placeholder="Ingrese la cantidad de metros"
-									th:field="*{metros}" required min="25.00" step="0.1" pattern="^\d*(\.\d{0,2})?$">
-							
+									placeholder="Ingrese nombres]"
+									th:field="*{nombres}" required minlength="4" maxlength="60" 
+								pattern="[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+">
 							</div>
 							<div class="form-group">
-								<label for="exampleInputText">Direccion</label> <input
+								<label for="exampleInputText">Apellidos</label> <input
 									type="text" class="form-control" id="direccion"
 									aria-describedby="direccionHelp"
-									placeholder="Ingrese la direccion del departamento"
-									th:field="*{direccion}" required minlength="5" maxlength="40" 
-									pattern="[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+">
+									placeholder="Ingrese apellidos"
+									th:field="*{apellidos}" required minlength="4" maxlength="60" 
+								pattern="[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+">
 							</div>
-							
 							<div class="form-group">
-								<label for="inputState">Edificio</label> <select id="inputState"
-									class="form-control" th:field="*{edificio}" required>
-									<option value="">[Seleccione Edificio]</option>
-									<option th:each="edificio: ${edificios}"
-										th:text="${edificio.nombre}" th:value="${edificio.idEdificio}"></option>
+								<label for="exampleInputText">Fecha de Nacimiento</label> <input
+									type="date" class="form-control" id="direccion"
+									aria-describedby="dniHelp"
+									placeholder="Ingrese fecha naciminto"
+									th:field="*{fecha_nacimiento}" required>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputText">Dni</label> <input
+									type="text" class="form-control" id="direccion"
+									aria-describedby="dniHelp"
+									placeholder="Ingrese el dni del propietario"
+									th:field="*{dni}" required minlength="8" maxlength="8" pattern="[0-9]{8}">
+							</div>
+							<div class="form-group">
+								<label for="exampleInputText">Telefono</label> <input
+									type="text" class="form-control" id="direccion"
+									aria-describedby="direccionHelp"
+									placeholder="Ingrese el telefono"
+									th:field="*{telefono}" required minlength="9" maxlength="9" pattern="[0-9]{9}">
+							</div>
+							<div class="form-group">
+								<label for="inputState">Propietario</label> <select id="inputState"
+									class="form-control" th:field="*{propietario}" required>
+									<option value="">[Seleccione Propietario]</option>
+									<option th:each="propietario: ${propietarios}"
+										th:text="${propietario.nombres}" 
+										th:value="${propietario.idPropietario}"></option>
 								</select>
 							</div>
 							<button type="submit" class="btn btn-primary">Registrar</button>
@@ -137,114 +154,32 @@
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col">Id</th>
-						<th scope="col">Metros</th>
-						<th scope="col">Direccion</th>
-						<th scope="col">Tipo</th>
-						<th scope="col">Edificio</th>
-						<th scope="col">Fecha de Registro</th>
+						<th scope="col">Nombre</th>
+						<th scope="col">Apellidos</th>
+						<th scope="col">Fecha de Nacimiento</th>
+						<th scope="col">Dni</th>
+						<th scope="col">Telefono</th>
+						<th scope="col">Propietario</th>
 						<th scope="col">Administrador</th>
-						<th scope="col">Estado</th>
-						<th scope="col">Opciones</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="bean:${departamentos}">
-						<td scope="row" th:text="${bean.idDepartamento}"></td>
-						<td scope="row" th:text="${bean.metros}"></td>
-						<td scope="row" th:text="${bean.direccion}"></td>
-						<td scope="row" th:text="${bean.tipoDepartamento.nombre}"></td>
-						<td scope="row" th:text="${bean.edificio.nombre}"></td>
-						<td scope="row" th:text="${bean.fecha_registro}"></td>
+					<tr th:each="bean:${ocupantes}">
+						<td scope="row" th:text="${bean.idOcupante}"></td>
+						<td scope="row" th:text="${bean.nombres}"></td>
+						<td scope="row" th:text="${bean.apellidos}"></td>
+						<td scope="row" th:text="${bean.fecha_nacimiento}"></td>
+						<td scope="row" th:text="${bean.dni}"></td>
+						<td scope="row" th:text="${bean.telefono}"></td>
+						<td scope="row" th:text="${bean.propietario.nombres}"></td>
 						<td scope="row" th:text="${bean.administrador.nombres + ' ' + bean.administrador.apellidos}"></td>
-						<td><span th:if="${bean.estado == 0}"> Inactivo </span> <span
-							th:if="${bean.estado == 1}"> Activo </span></td>
-						<td>
-							<button class="btn btn-primary" data-toggle="modal"
-								data-target="#modalDepartamentoEdit">
-								<i class="far fa-edit"></i>Editar
-							</button>
-
-							<button th:unless="${bean.estado == 0}"
-								class="btn btn-danger btn-eliminar">
-								<i class="fa fa-trash"></i> <span> Eliminar </span>
-							</button>
-
-							<button th:if="${bean.estado == 0}"
-								class="btn btn-success btn-activar">
-								<i class="fa fa-check"></i> <span> Activar </span>
-							</button>
-						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
 
-
-	<!-- Modal Edit -->
-	<div class="modal fade" id="modalDepartamentoEdit" tabindex="-1"
-		role="dialog" aria-labelledby="modalDepartamentoEdit"
-		aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="departamentoModal">Registro de
-							departamento</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<!-- Formulario -->
-						<form th:action="@{/administrador/registrarDepartamento}"
-							method="post" th:object="${departamento}">
-							<div class="form-group">
-								<label for="exampleInputText">Metros</label> <input type="text"
-									class="form-control" id="metros" aria-describedby="metrosHelp"
-									placeholder="Ingrese la cantidad de metros"
-									th:field="*{metros}">
-							</div>
-							<div class="form-group">
-								<label for="exampleInputText">Direccion</label> <input
-									type="text" class="form-control" id="direccion"
-									aria-describedby="direccionHelp"
-									placeholder="Ingrese la direccion del departamento"
-									th:field="*{direccion}">
-							</div>
-							<div class="form-group">
-								<label for="inputState">Tipo de Departamento</label> <select
-									id="inputState" class="form-control"
-									th:field=*{tipoDepartamento}>
-									<option value="0">[Seleccione Tipo de Departamento]</option>
-									<option th:each="tipodepa: ${tipodepartamentos}"
-										th:text="${tipodepa.nombre}" th:value="${tipodepa.idTipo}"></option>
-								</select>
-							</div>
-							<div class="form-group">
-								<label for="inputState">Edificio</label> <select id="inputState"
-									class="form-control" th:field="*{edificio}">
-									<option value="0">[Seleccione Edificio]</option>
-									<option th:each="edificio: ${edificios}"
-										th:text="${edificio.nombre}" th:value="${edificio.idEdificio}"></option>
-								</select>
-							</div>
-							<button type="submit" class="btn btn-primary">Registrar</button>
-						</form>
-						<!-- Formulario END -->
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Cancelar</button>
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- BODY END -->
+	<!-- Formulario-End -->
 
 	<!-- Optional JavaScript; choose one of the two! -->
 
@@ -259,6 +194,7 @@
 		crossorigin="anonymous"></script>
 
 	<!-- Toast -->
+	
 	<script src="https://code.jquery.com/jquery-3.6.0.js"
 		integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
 		crossorigin="anonymous"></script>
@@ -266,44 +202,6 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 	<script th:src="@{/js/navbar-js.js}"></script>
-	<script>
-		$(document).on("click", ".btn-eliminar", function() {
-			//alert("click");
-			let cod;
-			cod = $(this).parents("tr").find("td")[0].innerHTML;
-			const http = new XMLHttpRequest();
-			const url = 'actualizarEstado?id=' + cod + '&estado=0';
-
-			http.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					console.log(this.responseText);
-					location.href = "departamento";
-				}
-			}
-
-			http.open("PUT", url);
-			http.send();
-		});
-
-		$(document).on("click", ".btn-activar", function() {
-			//alert("click");
-			let cod;
-			cod = $(this).parents("tr").find("td")[0].innerHTML;
-			const http = new XMLHttpRequest();
-			const url = 'actualizarEstado?id=' + cod + '&estado=1';
-
-			http.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					console.log(this.responseText);
-					location.href = "departamento";
-				}
-			}
-
-			http.open("PUT", url);
-			http.send();
-		});
-	</script>
-
 
 	<script th:inline="javascript" th:if="${mensaje!=null}">
 		let msg;
@@ -374,8 +272,6 @@
 			"hideMethod" : "fadeOut"
 		});
 	</script>
-
-
 </body>
 
 </html>
