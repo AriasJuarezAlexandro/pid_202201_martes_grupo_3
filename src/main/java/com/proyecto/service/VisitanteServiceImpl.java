@@ -23,4 +23,9 @@ public class VisitanteServiceImpl implements VisitanteService{
 		return repository.findAll();
 	}
 
+	@Override
+	public Visitante buscarPorDni(int dni) {
+		return repository.findByDni(dni);
+	}
+
 }
