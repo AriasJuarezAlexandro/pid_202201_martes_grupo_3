@@ -87,4 +87,20 @@ public class VisitaController {
 		return "redirect:/administrador/visita";
 	}
 	
+	@GetMapping(value = "/buscarVisitaPorDniNombreEstado")
+	@ResponseBody
+	public List<Visita> buscarVisitantePorDni(
+			@RequestParam(value = "dni" , required = false , defaultValue = "") String dni , 
+			@RequestParam(value = "nombre" , required = false , defaultValue = "") String nombre , 
+			@RequestParam(value = "estado" , required = false , defaultValue = "0") int estado) {
+		
+		List<Visita> temp = null;
+		
+		if(estado != -1) {
+			temp = visitaService.listaVisitaFiltro("%"+dni+"%","%"+nombre+"%", estado);
+		} else temp = visitaService.listarVisitas();
+
+		return temp;
+	}
+	
 }

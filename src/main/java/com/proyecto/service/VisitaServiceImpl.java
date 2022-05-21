@@ -24,4 +24,8 @@ public class VisitaServiceImpl implements VisitaService{
 		return repository.save(visita);
 	}
 
+	@Override
+	public List<Visita> listaVisitaFiltro(String dni, String nombre, int estado) {
+		return repository.listaVisitaPorDniNombreEstado(dni, nombre, estado);
+	}
 }
