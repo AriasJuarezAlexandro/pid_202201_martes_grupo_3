@@ -1,6 +1,7 @@
 package com.proyecto.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,11 @@ public class PropietarioServiceImpl implements PropietarioService{
 	@Override
 	public List<Propietario> listarPropietarios() {
 		return repository.findAll();
+	}
+
+	@Override
+	public Optional<Propietario> buscarPorId(int id) {
+		return repository.findById(id);
 	}
 
 }
