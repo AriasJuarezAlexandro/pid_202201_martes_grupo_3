@@ -103,4 +103,21 @@ public class VisitaController {
 		return temp;
 	}
 	
+	@PutMapping(value = "/registrarSalida")
+	public String registroSalida(
+			@RequestParam(value = "idVisita") int idVisita ,
+			@RequestParam(value = "comentario" , defaultValue = "") String comentario , RedirectAttributes redirect) {
+
+		visitaService.registrarSalidaVisita(idVisita, 1 , comentario);
+		
+		return "redirect:/administrador/visita";
+	}
+	
+	@GetMapping(value = "/buscarVisitantePorDni/{dni}")
+	@ResponseBody
+	public Visitante buscarVisitantePorDni(@PathVariable("dni") int dni , RedirectAttributes redirect , Model model) {
+		Visitante temp = visitanteService.buscarPorDni(dni);
+		return temp;
+	}
+	
 }

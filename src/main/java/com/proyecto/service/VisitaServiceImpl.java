@@ -28,4 +28,10 @@ public class VisitaServiceImpl implements VisitaService{
 	public List<Visita> listaVisitaFiltro(String dni, String nombre, int estado) {
 		return repository.listaVisitaPorDniNombreEstado(dni, nombre, estado);
 	}
+
+	@Override
+	public void registrarSalidaVisita(int idVisita, int estado , String comentario) {
+		repository.registrarSalida(idVisita, estado , comentario);
+	}
+
 }
