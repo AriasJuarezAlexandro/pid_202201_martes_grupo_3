@@ -65,7 +65,7 @@
 				</li>
 				<li class="nav-item exit"><a class="nav-link"
 					href="javascript:void(0);" type="submit" th:href="@{/logout}">
-						<i class="fa-solid fa-right-from-bracket"></i>Cerrar Sesion
+						<i class="fa-solid fa-right-from-bracket"></i>Cerrar Sesión
 				</a></li>
 			</ul>
 		</div>
@@ -161,8 +161,8 @@
 					<select class="custom-select mr-sm-2 estado-filtro"
 						id="estado-filtro">
 						<option value="-1">Todos</option>
-						<option value="0">No salio</option>
-						<option value="1">Salio</option>
+						<option value="0">No salió</option>
+						<option value="1">Salió</option>
 					</select>
 				</div>
 			</div>
@@ -182,8 +182,8 @@
 								<th scope="col" class="text-center">Nombres</th>
 								<th scope="col" class="text-center">Fecha de Nacimiento</th>
 								<th scope="col" class="text-center">DNI</th>
-								<th scope="col" class="text-center">Telefono</th>
-								<th scope="col" class="text-center">Direccion</th>
+								<th scope="col" class="text-center">Teléfono</th>
+								<th scope="col" class="text-center">Dirección</th>
 								<th scope="col" class="text-center">Departamento</th>
 								<th scope="col" class="text-center">Fecha de visita</th>
 								<th scope="col" class="text-center">Hora Ingreso</th>
@@ -209,9 +209,9 @@
 								<td scope="row" class="text-center" th:text="${#dates.format(bean.fecha_salida_estimada, 'HH:mm')}"></td>
 								<td scope="row" class="text-center" th:text="${#dates.format(bean.fecha_salida, 'dd-MM-yyyy HH:mm')}"></td>
 								<td><span th:if="${bean.estado == 0}"
-									class="btn btn-danger text-center" id="btn-salida"> No salio </span> <span
+									class="btn btn-danger text-center" id="btn-salida"> No salió </span> <span
 									th:if="${bean.estado == 1}" class="btn btn-success text-center"
-									id="btn-salida"> Salio </span></td>
+									id="btn-salida"> Salió </span></td>
 								<td>
 							</tr>
 						</tbody>
