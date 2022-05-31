@@ -26,36 +26,42 @@ public class PropietarioController {
 	private PropietarioService propietarioService;
 	@Autowired
 	private DepartamentoService departamentoService;
-	
+
 	@RequestMapping(value = "/propietario")
-	public String propietarioPage(@ModelAttribute("propietario") Propietario propietario , Model model) {
+	public String propietarioPage(@ModelAttribute("propietario") Propietario propietario, Model model) {
 		try {
-			model.addAttribute("propietarios" , propietarioService.listarPropietarios());
-			model.addAttribute("departamentos" , departamentoService.listaDepartamento());
+			model.addAttribute("propietarios", propietarioService.listarPropietarios());
+			model.addAttribute("departamentos", departamentoService.listaDepartamento());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "propietario";
 	}
-	
+
 	@PostMapping(value = "/registrarPropietario")
-	public String registrarPropietario(@ModelAttribute("propietario") Propietario propietario , 
-										RedirectAttributes redirect , HttpSession session) {
+	public String registrarPropietario(@ModelAttribute("propietario") Propietario propietario,
+			RedirectAttributes redirect, HttpSession session) {
 		try {
-			Administrador admin = (Administrador) session.getAttribute("user");
-			propietario.setAdministrador(admin);
-			departamentoService.actualizarTipoDepa(propietario.getDepartamento().getIdDepartamento(), 2);
-			propietario.setEstado(1);
-			propietario.setFecha_registro(new Date());
-			propietarioService.registrarPropietario(propietario);
-			
+			Propietario temp = propietarioService.buscarPorDni(propietario.getDni());
+			if (temp == null) {
+				Administrador admin = (Administrador) session.getAttribute("user");
+				propietario.setAdministrador(admin);
+				departamentoService.actualizarTipoDepa(propietario.getDepartamento().getIdDepartamento(), 2);
+				propietario.setEstado(1);
+				propietario.setFecha_registro(new Date());
+				propietarioService.registrarPropietario(propietario);
+				redirect.addFlashAttribute("mensaje", "Propietario registrado correctamente");
+			}else {
+				redirect.addFlashAttribute("error", "Este propietario ya se encuentra registrado");
+			}
+
 		} catch (Exception e) {
-			redirect.addFlashAttribute("error","Error al registrar propietario");
+			redirect.addFlashAttribute("error", "Error al registrar propietario");
 			e.printStackTrace();
 			return "redirect:/administrador/propietario";
 		}
+
 		
-		redirect.addFlashAttribute("mensaje","Propietario registrado correctamente");
 		return "redirect:/administrador/propietario";
 	}
 }

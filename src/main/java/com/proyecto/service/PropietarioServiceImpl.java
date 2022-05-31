@@ -30,4 +30,9 @@ public class PropietarioServiceImpl implements PropietarioService{
 		return repository.findById(id);
 	}
 
+	@Override
+	public Propietario buscarPorDni(int id) {
+		return repository.findByDni(id);
+	}
+
 }

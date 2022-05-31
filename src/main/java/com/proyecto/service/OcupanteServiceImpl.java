@@ -23,4 +23,9 @@ public class OcupanteServiceImpl implements OcupanteService{
 		return repository.findAll();
 	}
 
+	@Override
+	public Ocupante buscarPorDni(int dni) {
+		return repository.findByDni(dni);
+	}
+
 }

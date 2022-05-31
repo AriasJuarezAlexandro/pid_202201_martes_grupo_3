@@ -22,6 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.proyecto.entity.Administrador;
 import com.proyecto.entity.Propietario;
 import com.proyecto.entity.Visita;
@@ -62,33 +67,43 @@ public class VisitaController {
 			@RequestParam("id_propietario") int idPropietario) {
 
 		try {
-			Date fecha_ingreso = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fecha_cita + ' ' + hora_ingreso + ":00");
-			Date fecha_salida = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fecha_cita + ' ' + hora_salida + ":00");
 			
-			Visitante visitante = visitanteService.buscarPorDni(dni);
-			Optional<Propietario> propietario = propietarioService.buscarPorId(idPropietario);
-			Administrador admin = (Administrador) session.getAttribute("user");
+			List<Visita> busqueda = visitaService.buscarVisitasPorVisitante(dni);
 			
-			Visita temp = new Visita();
-			temp.setFecha_entrada(fecha_ingreso);
-			temp.setFecha_salida(fecha_salida);
-			temp.setFecha_registro(new Date());
-			temp.setVisitante(visitante);
-			temp.setPropietario(propietario.get());
-			temp.setAdministrador(admin);
-			temp.setEstado(0);
-			visitaService.registrarVisita(temp);
+			if(busqueda.isEmpty()) {
+				Date fecha_ingreso = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fecha_cita + ' ' + hora_ingreso + ":00");
+				Date fecha_salida = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fecha_cita + ' ' + hora_salida + ":00");
+				
+				Visitante visitante = visitanteService.buscarPorDni(dni);
+				Optional<Propietario> propietario = propietarioService.buscarPorId(idPropietario);
+				Administrador admin = (Administrador) session.getAttribute("user");
+				
+				Visita temp = new Visita();
+				temp.setFecha_entrada(fecha_ingreso);
+				temp.setFecha_salida_estimada(fecha_salida);
+				temp.setFecha_registro(new Date());
+				temp.setVisitante(visitante);
+				temp.setPropietario(propietario.get());
+				temp.setAdministrador(admin);
+				temp.setEstado(0);
+				visitaService.registrarVisita(temp);
+				redirect.addFlashAttribute("mensaje","Visita registrada correctamente.");
+			}else {
+				redirect.addFlashAttribute("error","El visitante aun no ha salido");
+			}
+
 		} catch (ParseException e) {
 			redirect.addFlashAttribute("error","Error al registrar visita");
 			e.printStackTrace();
 			return "redirect:/administrador/visita";
 		}
-		redirect.addFlashAttribute("mensaje","Visita registrada correctamente.");
+		
 		return "redirect:/administrador/visita";
 	}
 	
 	@GetMapping(value = "/buscarVisitaPorDniNombreEstado")
 	@ResponseBody
+	@JsonSerialize
 	public List<Visita> buscarVisitantePorDni(
 			@RequestParam(value = "dni" , required = false , defaultValue = "") String dni , 
 			@RequestParam(value = "nombre" , required = false , defaultValue = "") String nombre , 
@@ -99,7 +114,6 @@ public class VisitaController {
 		if(estado != -1) {
 			temp = visitaService.listaVisitaFiltro("%"+dni+"%","%"+nombre+"%", estado);
 		} else temp = visitaService.listarVisitas();
-
 		return temp;
 	}
 	

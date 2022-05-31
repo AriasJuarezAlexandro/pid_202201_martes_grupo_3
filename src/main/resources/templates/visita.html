@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
@@ -78,7 +78,7 @@
 	<!-- Contendio -->
 
 	<!-- REGISTRO VISITA -->
-	<div class="container" style="max-width: 1350px">
+	<div class="container" style="max-width: 1750px">
 		<form th:action="@{/administrador/registraVisita}" method="post"
 			class="border mt-3 p-3">
 			<h2 class="text-center pb-2 border-bottom">Registro de Visita</h2>
@@ -105,15 +105,15 @@
 				<label for="staticText" class="col-sm-2 col-form-label">Fecha
 					de visita</label>
 				<div class="col-sm-4">
-					<input type="date" class="form-control" name="fecha_cita" required>
+					<input type="date" class="form-control" name="fecha_cita"  id="fecha_visita" required readonly>
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="staticText" class="col-sm-2 col-form-label">Hora
 					de ingreso</label>
 				<div class="col-sm-4">
-					<input type="time" class="form-control" min="06:00" max="16:00"
-						 required id="hora_ingreso" name="hora_ingreso">
+					<input type="time" class="form-control"
+						 required id="hora_ingreso" name="hora_ingreso" readonly>
 				</div>
 			</div>
 			<div class="form-group row">
@@ -178,35 +178,39 @@
 					<table class="table">
 						<thead class="thead-dark">
 							<tr>
-								<th scope="col">ID</th>
-								<th scope="col">Nombres</th>
-								<th scope="col">Fecha de Nacimiento</th>
-								<th scope="col">DNI</th>
-								<th scope="col">Telefono</th>
-								<th scope="col">Direccion</th>
-								<th scope="col">Departamento</th>
-								<th scope="col">Fecha de Ingreso</th>
-								<th scope="col">Fecha de Salida</th>
-								<th scope="col">Estado</th>
+								<th scope="col" class="text-center">ID</th>
+								<th scope="col" class="text-center">Nombres</th>
+								<th scope="col" class="text-center">Fecha de Nacimiento</th>
+								<th scope="col" class="text-center">DNI</th>
+								<th scope="col" class="text-center">Telefono</th>
+								<th scope="col" class="text-center">Direccion</th>
+								<th scope="col" class="text-center">Departamento</th>
+								<th scope="col" class="text-center">Fecha de visita</th>
+								<th scope="col" class="text-center">Hora Ingreso</th>
+								<th scope="col" class="text-center">Hora Salida (Estimada)</th>
+								<th scope="col" class="text-center">Salida</th>
+								<th scope="col" class="text-center">Estado</th>
 							</tr>
 						</thead>
 						<tbody id="lista-visitas">
 							<tr th:each="bean:${visitas}">
 
-								<td scope="row" th:text="${bean.idVisita}"></td>
-								<td scope="row"
+								<td scope="row" class="text-center" th:text="${bean.idVisita}"></td>
+								<td scope="row" class="text-center"
 									th:text="${bean.visitante.nombres + ' ' + bean.visitante.apellidos}"></td>
-								<td scope="row" th:text="${bean.visitante.fecha_nacimiento}"></td>
-								<td scope="row" th:text="${bean.visitante.dni}"></td>
-								<td scope="row" th:text="${bean.visitante.telefono}"></td>
-								<td scope="row" th:text="${bean.visitante.direccion}"></td>
-								<td scope="row"
+								<td scope="row" class="text-center" th:text="${bean.visitante.fecha_nacimiento}"></td>
+								<td scope="row" class="text-center" th:text="${bean.visitante.dni}"></td>
+								<td scope="row" class="text-center" th:text="${bean.visitante.telefono}"></td>
+								<td scope="row" class="text-center" th:text="${bean.visitante.direccion}"></td>
+								<td scope="row" class="text-center"
 									th:text="${bean.visitante.propietario.departamento.direccion}"></td>
-								<td scope="row" th:text="${bean.fecha_entrada}"></td>
-								<td scope="row" th:text="${bean.fecha_salida}"></td>
+								<td scope="row" class="text-center" th:text="${#dates.format(bean.fecha_entrada, 'dd-MM-yyyy')}"></td>
+								<td scope="row" class="text-center" th:text="${#dates.format(bean.fecha_entrada, 'HH:mm')}"></td>
+								<td scope="row" class="text-center" th:text="${#dates.format(bean.fecha_salida_estimada, 'HH:mm')}"></td>
+								<td scope="row" class="text-center" th:text="${#dates.format(bean.fecha_salida, 'dd-MM-yyyy HH:mm')}"></td>
 								<td><span th:if="${bean.estado == 0}"
-									class="btn btn-danger" id="btn-salida"> No salio </span> <span
-									th:if="${bean.estado == 1}" class="btn btn-success"
+									class="btn btn-danger text-center" id="btn-salida"> No salio </span> <span
+									th:if="${bean.estado == 1}" class="btn btn-success text-center"
 									id="btn-salida"> Salio </span></td>
 								<td>
 							</tr>
@@ -274,7 +278,29 @@
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+	<script th:inline="javascript">
+	function padTo2Digits(num) {
+		  return String(num).padStart(2, '0');
+		}
+	function display_c(){
+		var refresh=1000; // Refresh rate in milli seconds
+		mytime=setTimeout('setTime()',refresh)
+		}
+	function setTime(){
+		var date = new Date();
+		//console.log(date.getHours());
+		var fecha_actual = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+		var hora_actual = padTo2Digits(date.getHours()) + ':' + padTo2Digits(date.getMinutes());
+		var d = document.getElementById('fecha_visita').valueAsDate = fecha_actual;
+		var h = document.getElementById('hora_ingreso').value = hora_actual;
+		display_c();
+	}
+	$(document).ready( function() {
+		setTime();
+	});
+	</script>
 	<script th:src="@{/js/navbar-js.js}"></script>
 
 	<script th:inline="javascript">
@@ -298,6 +324,7 @@
 			});
 		});
 	</script>
+	
 
 	<script th:inline="javascript">
 		$(document)
@@ -329,49 +356,80 @@
 											'estado' : estado
 										},
 										type : "GET",
+										contentType: "application/json; charset=utf-8",
 										dataType : "JSON",
 										success : function(data) {
+											//console.log(data);
 											$.each(data,function(index,bean) {
 												
 																if (bean.estado == 0) {
 																	est = "No salio";
-																	estadoClass = "btn btn-danger"
+																	estadoClass = "text-center btn btn-danger"
 																} else {
 																	est = "Salio";
-																	estadoClass = "btn btn-success"
+																	estadoClass = "text-center btn btn-success"
 																}
 																;
-
+																function convertTZ(date, tzString) {
+																    return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
+																}
+																function padTo2Digits(num) {
+																	  return String(num).padStart(2, '0');
+																	}
+																var fecha = convertTZ(bean.fecha_entrada, "America/Lima");
+																var fecha_salida_estimada = convertTZ(bean.fecha_salida_estimada, "America/Lima");
+																var fecha_salida_s = '';
+																if(bean.fecha_salida != null){
+																	var fecha_salida = convertTZ(bean.fecha_salida, "America/Lima");
+																	fecha_salida.setHours(fecha_salida.getHours() - 5);
+																	fecha_salida_s = padTo2Digits(fecha_salida.getDate())+'-'+padTo2Digits(fecha_salida.getMonth()+1)+'-'+fecha_salida.getFullYear()+' '+padTo2Digits(fecha_salida.getHours())+':'+padTo2Digits(fecha_salida.getMinutes());
+																}
+																
+																
+																fecha.setHours(fecha.getHours() - 5);
+																fecha_salida_estimada.setHours(fecha_salida_estimada.getHours() - 5);
+																
+																//console.log(fecha);
+																var fecha_actual = padTo2Digits(fecha.getDate())+'-'+padTo2Digits(fecha.getMonth()+1)+'-'+fecha.getFullYear();
+																var hora_entrada = padTo2Digits(fecha.getHours())+':'+padTo2Digits(fecha.getMinutes());
+																var hora_salida_estimada = padTo2Digits(fecha_salida_estimada.getHours())+':'+padTo2Digits(fecha_salida_estimada.getMinutes());
+																
 																$("#lista-visitas").append(
 																				'<tr>'
-																						+ '<td scope="row">'
+																						+ '<td scope="row" class="text-center">'
 																						+ bean.idVisita
 																						+ '</td>'
-																						+ '<td scope="row">'
+																						+ '<td scope="row" class="text-center">'
 																						+ bean.visitante.nombres
 																						+ " "
 																						+ bean.visitante.apellidos
 																						+ '</td>'
-																						+ '<td scope="row">'
+																						+ '<td scope="row" class="text-center">'
 																						+ bean.visitante.fecha_nacimiento
 																						+ '</td>'
-																						+ '<td scope="row">'
+																						+ '<td scope="row" class="text-center">'
 																						+ bean.visitante.dni
 																						+ '</td>'
-																						+ '<td scope="row">'
+																						+ '<td scope="row" class="text-center">'
 																						+ bean.visitante.telefono
 																						+ '</td>'
-																						+ '<td scope="row">'
+																						+ '<td scope="row" class="text-center">'
 																						+ bean.visitante.direccion
 																						+ '</td>'
-																						+ '<td scope="row">'
+																						+ '<td scope="row" class="text-center">'
 																						+ bean.propietario.departamento.direccion
 																						+ '</td>'
-																						+ '<td scope="row">'
-																						+ bean.fecha_entrada
+																						+ '<td scope="row" class="text-center">'
+																						+ fecha_actual
 																						+ '</td>'
-																						+ '<td scope="row">'
-																						+ bean.fecha_salida
+																						+ '<td scope="row" class="text-center">'
+																						+ hora_entrada
+																						+ '</td>'
+																						+ '<td scope="row" class="text-center">'
+																						+ hora_salida_estimada
+																						+ '</td>'
+																						+ '<td scope="row" class="text-center">'
+																						+ fecha_salida_s
 																						+ '</td>'
 																						+ '<td scope="row" id="btn-salida" class = "'+estadoClass+'">'
 																						+ est
@@ -386,13 +444,12 @@
 						});
 	</script>
 
-<
 	<script th:inline="javascript">
 		$(document).on("click", "#btn-salida", function() {
 			//alert("Salida");
 			cod = $(this).parents("tr").find("td")[0].innerHTML;
 			fec_salida = $(this).parents("tr").find("td")[8].innerHTML;
-			alert(fec_salida);
+			//alert(fec_salida);
 			$("#modalSalida").modal("show");
 			$("#modal-hora").val(fec_salida);
 			$(document).on("click", "#btn-registrarhora", function() {
@@ -407,7 +464,7 @@
 					},
 					dataType : 'HTML',
 					success : function(data) {
-						alert("Exito");
+						//alert("Exito");
 						location.reload();
 					},
 					error : function(e) {

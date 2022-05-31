@@ -21,10 +21,15 @@ public interface VisitaRepository extends JpaRepository<Visita, Integer>{
 			@Param("p_dni") String dni ,
 			@Param("p_nombre") String nombre , 
 			@Param("p_estado") int estado);
+	
 	@Modifying
 	@Transactional
 	@Query("update Visita set estado = :p_estado , comentario = :p_comentario where idVisita = :p_idVisita")
 	public void registrarSalida(@Param("p_idVisita") int id , 
 								@Param("p_estado") int estado , 
 								@Param("p_comentario") String comentario);
+	
+
+	@Query("select v from Visita v where v.visitante.dni = ?1 and v.estado = 0")
+	public List<Visita> buscarVisitaPorVisitante(int dniVisitante);
 }

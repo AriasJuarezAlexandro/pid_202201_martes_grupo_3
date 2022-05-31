@@ -9,4 +9,5 @@ public interface VisitaService {
 	public abstract Visita registrarVisita(Visita visita);
 	public List<Visita> listaVisitaFiltro(String dni , String nombre , int estado);
 	public void registrarSalidaVisita(int idVisita , int estado , String comentario);
+	public List<Visita> buscarVisitasPorVisitante(int dniVisitante);
 }

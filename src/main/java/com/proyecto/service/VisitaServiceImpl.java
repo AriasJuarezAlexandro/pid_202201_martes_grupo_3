@@ -1,5 +1,6 @@
 package com.proyecto.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,14 @@ public class VisitaServiceImpl implements VisitaService{
 
 	@Override
 	public void registrarSalidaVisita(int idVisita, int estado , String comentario) {
+		Visita temp = repository.findById(idVisita).get();
+		temp.setFecha_salida(new Date());
 		repository.registrarSalida(idVisita, estado , comentario);
+	}
+
+	@Override
+	public List<Visita> buscarVisitasPorVisitante(int dniVisitante) {
+		return repository.buscarVisitaPorVisitante(dniVisitante);
 	}
 
 }

@@ -24,31 +24,39 @@ public class VisitanteController {
 	private VisitanteService visitanteService;
 	@Autowired
 	private PropietarioService propietarioService;
-	
+
 	@RequestMapping(value = "/visitante")
-	public String ocupantePage(@ModelAttribute("visitante")Visitante visitante , Model model) {
+	public String ocupantePage(@ModelAttribute("visitante") Visitante visitante, Model model) {
 		try {
-			model.addAttribute("visitantes" , visitanteService.listarVisitantes());
-			model.addAttribute("propietarios" , propietarioService.listarPropietarios());
+			model.addAttribute("visitantes", visitanteService.listarVisitantes());
+			model.addAttribute("propietarios", propietarioService.listarPropietarios());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "visitante";
 	}
-	
+
 	@PostMapping(value = "/registrarVisitante")
-	public String registrarVisitante(@ModelAttribute("visitante")Visitante visitante , RedirectAttributes redirect , HttpSession session) {
-	
+	public String registrarVisitante(@ModelAttribute("visitante") Visitante visitante, RedirectAttributes redirect,
+			HttpSession session) {
+
 		try {
-			Administrador admin = (Administrador) session.getAttribute("user");
-			visitante.setAdministrador(admin);
-			visitanteService.registrarVisitante(visitante);
+			Visitante temp = visitanteService.buscarPorDni(visitante.getDni());
+			if (temp == null) {
+				Administrador admin = (Administrador) session.getAttribute("user");
+				visitante.setAdministrador(admin);
+				visitanteService.registrarVisitante(visitante);
+				redirect.addFlashAttribute("mensaje", "Visitante registrado correctamente");
+			} else {
+				redirect.addFlashAttribute("error", "Este visitante ya se encuentra registrado");
+			}
+
 		} catch (Exception e) {
-			redirect.addFlashAttribute("error","Error al registrar visitante");
+			redirect.addFlashAttribute("error", "Error al registrar visitante");
 			e.printStackTrace();
 			return "redirect:/administrador/visitante";
 		}
-		redirect.addFlashAttribute("mensaje","Visitante registrado correctamente");
+
 		return "redirect:/administrador/visitante";
 	}
 }

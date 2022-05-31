@@ -9,4 +9,5 @@ public interface PropietarioService {
 	public abstract Propietario registrarPropietario(Propietario propietario);
 	public abstract List<Propietario> listarPropietarios();
 	public abstract Optional<Propietario> buscarPorId(int id);
+	public Propietario buscarPorDni(int id);
 }

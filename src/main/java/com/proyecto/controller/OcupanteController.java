@@ -40,15 +40,22 @@ public class OcupanteController {
 	public String registrarOcupante(@ModelAttribute("ocupante")Ocupante ocupante , RedirectAttributes redirect , HttpSession session) {
 	
 		try {
-			Administrador admin = (Administrador) session.getAttribute("user");
-			ocupante.setAdministrador(admin);
-			ocupanteService.registrarOcupante(ocupante);
+			Ocupante temp = ocupanteService.buscarPorDni(ocupante.getDni());
+			if(temp == null) {
+				Administrador admin = (Administrador) session.getAttribute("user");
+				ocupante.setAdministrador(admin);
+				ocupanteService.registrarOcupante(ocupante);
+				redirect.addFlashAttribute("mensaje","Ocupante registrado correctamente");
+			}else {
+				redirect.addFlashAttribute("error","Este ocupante ya se encuentra registrado");
+			}
+			
 		} catch (Exception e) {
 			redirect.addFlashAttribute("error","Error al registrar ocupante");
 			e.printStackTrace();
 			return "redirect:/administrador/ocupante";
 		}
-		redirect.addFlashAttribute("mensaje","Ocupante registrado correctamente");
+		
 		return "redirect:/administrador/ocupante";
 	}
 }
