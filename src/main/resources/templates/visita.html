@@ -445,13 +445,27 @@
 	</script>
 
 	<script th:inline="javascript">
+	function display_c(){
+		var refresh=1000; // Refresh rate in milli seconds
+		mytime=setTimeout('setTime()',refresh)
+	}
+	function setTime(){
+		var fecha = new Date();
+		$("#modal-hora").val(padTo2Digits(fecha.getHours())+':'+padTo2Digits(fecha.getMinutes()));
+		display_c();
+	}
 		$(document).on("click", "#btn-salida", function() {
 			//alert("Salida");
+			function padTo2Digits(num) {
+			return String(num).padStart(2, '0');
+			}
+			
 			cod = $(this).parents("tr").find("td")[0].innerHTML;
 			fec_salida = $(this).parents("tr").find("td")[8].innerHTML;
+			setTime();
 			//alert(fec_salida);
 			$("#modalSalida").modal("show");
-			$("#modal-hora").val(fec_salida);
+			
 			$(document).on("click", "#btn-registrarhora", function() {
 				//alert("Registrar ID : " + cod);
 				comentario = document.getElementById("modal-comentario").value;
