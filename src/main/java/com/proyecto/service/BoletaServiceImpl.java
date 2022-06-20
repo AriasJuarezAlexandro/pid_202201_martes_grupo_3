@@ -18,4 +18,14 @@ public class BoletaServiceImpl implements BoletaService{
 	public List<Boleta> listarBoletas() {
 		return repository.findAll();
 	}
+	
+	@Override
+	public Boleta registrarBoleta(Boleta boleta) {
+		return repository.save(boleta);
+	}
+	
+	@Override
+	public Boleta buscarBoletaPorPropietario(int idPropietario , int mes , int idServicio) {
+		return repository.buscarBoletasPorPropietario(idPropietario, mes , idServicio);
+	}
 }
