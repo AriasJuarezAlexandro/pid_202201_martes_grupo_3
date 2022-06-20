@@ -28,4 +28,24 @@ public class BoletaServiceImpl implements BoletaService{
 	public Boleta buscarBoletaPorPropietario(int idPropietario , int mes , int idServicio) {
 		return repository.buscarBoletasPorPropietario(idPropietario, mes , idServicio);
 	}
+
+	@Override
+	public List<Boleta> filtroBoleta(String dni, String nombre, int estado, int servicio) {
+		return repository.filtroBoleta(dni, nombre, estado, servicio);
+	}
+
+	@Override
+	public List<Boleta> filtroBoletaSinServicio(String dni, String nombre, int estado) {
+		return repository.filtroBoletaSinServicio(dni, nombre, estado);
+	}
+
+	@Override
+	public List<Boleta> filtroBoletaSinEstado(String dni, String nombre, int servicio) {
+		return repository.filtroBoletaSinEstado(dni, nombre, servicio);
+	}
+
+	@Override
+	public List<Boleta> filtroBoletaSinEstadoSinServicio(String dni, String nombre) {
+		return repository.filtroBoletaSinEstadoSinServicio(dni, nombre);
+	}
 }
