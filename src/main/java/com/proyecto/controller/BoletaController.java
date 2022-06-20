@@ -1,10 +1,22 @@
 package com.proyecto.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.proyecto.entity.Administrador;
+import com.proyecto.entity.Boleta;
+import com.proyecto.entity.Propietario;
+import com.proyecto.entity.Servicio;
 import com.proyecto.repository.ServicioRepository;
 import com.proyecto.service.BoletaService;
 import com.proyecto.service.DepartamentoService;
@@ -30,4 +42,44 @@ public class BoletaController {
 		model.addAttribute("propietarios", propietarioService.listarPropietarios());
 		return "boleta";
 	}
+	
+	@PostMapping("/registrarBoleta")
+	public String registraBoleta(RedirectAttributes redirect, HttpSession session,
+			@RequestParam("fecha_pago") String fecha_pago,
+			@RequestParam("id_servicio") int id_servicio, @RequestParam("id_propietario") int idPropietario) {
+
+		try {
+
+			Date fecha_vencimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fecha_pago);
+			
+			Boleta temp = boletaService.buscarBoletaPorPropietario(idPropietario, fecha_vencimiento.getMonth() , id_servicio);
+			if(temp == null) {
+				Servicio servicio = servicioRepository.findById(id_servicio).get();
+				Propietario propietario = propietarioService.buscarPorId(idPropietario).get();
+				Administrador admin = (Administrador) session.getAttribute("user");
+
+				Boleta obj = new Boleta();
+				obj.setServicio(servicio);
+				obj.setPropietario(propietario);
+				obj.setAdministrador(admin);
+				obj.setMes(fecha_vencimiento.getMonth());
+				obj.setFechaEmision(new Date());
+				obj.setFechaVencimiento(fecha_vencimiento);
+				obj.setEstado(0);
+
+				boletaService.registrarBoleta(obj);
+				redirect.addFlashAttribute("mensaje", "Boleta registrada correctamente.");
+			}else {
+				redirect.addFlashAttribute("error", "Boleta del propietario ya registrada con el mismo servicio y en el mismo mes");
+			}
+			
+		} catch (Exception e) {
+			redirect.addFlashAttribute("error", "Error al registrar boleta");
+			e.printStackTrace();
+			return "redirect:/administrador/boleta";
+		}
+
+		return "redirect:/administrador/boleta";
+	}
+	
 }
