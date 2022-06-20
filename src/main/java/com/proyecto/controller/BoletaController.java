@@ -2,15 +2,18 @@ package com.proyecto.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.proyecto.entity.Administrador;
@@ -80,6 +83,28 @@ public class BoletaController {
 		}
 
 		return "redirect:/administrador/boleta";
+	}
+	
+	@GetMapping(value = "/filtroBoleta")
+	@ResponseBody
+	public List<Boleta> filtroBoleta(@RequestParam(value = "dni", required = false, defaultValue = "") String dni,
+			@RequestParam(value = "nombre", required = false, defaultValue = "") String nombre,
+			@RequestParam(value = "estado", required = false, defaultValue = "0") int estado,
+			@RequestParam(value = "servicio", required = false) int servicio) {
+
+		System.out.println("SERVICIO : " + servicio);
+		
+		List<Boleta> temp = null;
+
+		if (estado == -1 && servicio == -1) {
+			temp = boletaService.filtroBoletaSinEstadoSinServicio("%" + dni + "%", "%" + nombre + "%");
+		}else if(estado == -1) {
+			temp = boletaService.filtroBoletaSinEstado("%" + dni + "%", "%" + nombre + "%", servicio);
+		}else if(servicio == -1) {
+			temp = boletaService.filtroBoletaSinServicio("%" + dni + "%", "%" + nombre + "%", estado);
+		}else temp = boletaService.filtroBoleta("%" + dni + "%", "%" + nombre + "%",estado , servicio);
+
+		return temp;
 	}
 	
 }

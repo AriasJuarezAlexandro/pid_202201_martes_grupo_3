@@ -9,5 +9,9 @@ public interface BoletaService {
 	// Registrar Boleta
 	public abstract Boleta registrarBoleta(Boleta boleta);
 	public abstract Boleta buscarBoletaPorPropietario(int idPropietario , int mes , int idServicio);
-	//
+	// Filtro
+	public abstract List<Boleta> filtroBoleta(String dni, String nombre, int estado, int servicio);
+	public abstract List<Boleta> filtroBoletaSinServicio(String dni, String nombre, int estado);
+	public abstract List<Boleta> filtroBoletaSinEstado(String dni, String nombre,int servicio);
+	public abstract List<Boleta> filtroBoletaSinEstadoSinServicio(String dni, String nombre);
 }
