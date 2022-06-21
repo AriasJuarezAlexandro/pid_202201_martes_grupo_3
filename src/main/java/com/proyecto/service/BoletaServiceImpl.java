@@ -25,6 +25,11 @@ public class BoletaServiceImpl implements BoletaService{
 	}
 	
 	@Override
+	public void pagarBoleta(int idBoleta , int estado) {
+		repository.pagoBoleta(idBoleta, estado);
+	}
+	
+	@Override
 	public Boleta buscarBoletaPorPropietario(int idPropietario , int mes , int idServicio) {
 		return repository.buscarBoletasPorPropietario(idPropietario, mes , idServicio);
 	}
