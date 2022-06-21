@@ -60,7 +60,7 @@
 						class="fa-solid fa-people-roof"></i>Ocupante</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{visitante}"><i
 						class="fa-solid fa-car-side"></i>Visitante</a></li>
-				<li class="nav-item active"><a class="nav-link"
+				<li class="nav-item"><a class="nav-link"
 					th:href="@{visita}"><i class="fa-solid fa-calendar-days"></i>Visita</a>
 				</li>
 				<li class="nav-item active"><a class="nav-link"
@@ -80,58 +80,28 @@
 
 	<!-- Contendio -->
 
-	<!-- REGISTRO VISITA -->
+	<!-- REGISTRO BOLETA -->
 	<div class="container" style="max-width: 1750px">
-		<form th:action="@{/administrador/registraVisita}" method="post"
+		<form th:action="@{/administrador/registrarBoleta}" method="post"
 			class="border mt-3 p-3">
-			<h2 class="text-center pb-2 border-bottom">Registro de Visita</h2>
+			<h2 class="text-center pb-2 border-bottom">Registro de Boleta</h2>
 
-			<div class="form-group row pt-1">
-				<label for="staticText" class="col-sm-2 col-form-label">DNI</label>
-				<div class="col-sm-3">
-					<input type="number" class="form-control dni" id="dni-input"
-						name="dni" required minlength="8" maxlength="8" pattern="[0-9]{8}">
-				</div>
-				<div class="col-sm-2">
-					<button class="btn btn-primary form-control btn-buscar"
-						type="button">Buscar</button>
-				</div>
-			</div>
 			<div class="form-group row">
-				<label for="staticText" class="col-sm-2 col-form-label">Visitante</label>
-				<div class="col-sm-4">
-					<input type="text" class="form-control" id="visitante-input"
-						readonly required>
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="staticText" class="col-sm-2 col-form-label">Fecha
-					de visita</label>
-				<div class="col-sm-4">
-					<input type="date" class="form-control" name="fecha_cita"  id="fecha_visita" required readonly>
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="staticText" class="col-sm-2 col-form-label">Hora
-					de ingreso</label>
-				<div class="col-sm-4">
-					<input type="time" class="form-control"
-						 required id="hora_ingreso" name="hora_ingreso" readonly>
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="staticText" class="col-sm-2 col-form-label">Hora
-					de salida (Estimada)</label>
-				<div class="col-sm-4">
-					<input type="time" class="form-control" min="06:00" max="18:00"
-						required name="hora_salida">
-				</div>
-			</div>
-			<div class="form-group row">
-				<label for="staticText" class="col-sm-2 col-form-label">Visita
-					a</label>
+				<label for="staticText" class="col-sm-2 col-form-label">Servicio</label>
 				<div class="col-sm-4">
 					<select class="custom-select mr-sm-2" id="inlineFormCustomSelect"
+						name="id_servicio" required>
+						<option value="">[Seleccione Servicio]</option>
+						<option th:each="servicio : ${servicios}"
+							th:text="${servicio.nombre}" th:value="${servicio.idServicio}"></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="staticText" class="col-sm-2 col-form-label">Propietario</label>
+				<div class="col-sm-4">
+					<select class="custom-select mr-sm-2" id="id_propietario"
 						name="id_propietario" required>
 						<option value="">[Seleccione Propietario]</option>
 						<option th:each="propietario : ${propietarios}"
@@ -141,32 +111,43 @@
 				</div>
 			</div>
 
+			<div class="form-group row">
+				<label for="staticText" class="col-sm-2 col-form-label">Fecha
+					de pago</label>
+				<div class="col-sm-4">
+					<input type="date" class="form-control" name="fecha_pago"
+						id="fecha_pago" required>
+				</div>
+			</div>
+
 			<div class="col-sm-2">
-				<button class="btn btn-primary form-control" type="submit">Registrar</button>
+				<button class="btn btn-primary form-control" type="submit">Generar</button>
 			</div>
 
 		</form>
 
-		<!-- REGISTRO SALIDA -->
+		<!-- PAGO BOLETA -->
 		<form class="border mt-3 p-3">
-			<h2 class="text-center border-bottom">Registro de Salida</h2>
+			<h2 class="text-center border-bottom">Pago de Boleta</h2>
 			<div class="form-group row pt-1">
 				<label for="staticText" class="col-sm-2 col-form-label">DNI</label>
 				<div class="col-sm-3">
 					<input type="number" class="form-control dni-filtro"
 						id="dni-filtro">
 				</div>
+
 				<div class="col-sm-2">
-					<button class="btn btn-primary form-control btn-filtro"
-						type="button">Filtrar</button>
-				</div>
-				<div class="col-sm-2">
+
 					<select class="custom-select mr-sm-2 estado-filtro"
 						id="estado-filtro">
 						<option value="-1">Todos</option>
-						<option value="0">No salió</option>
-						<option value="1">Salió</option>
+						<option value="0">Pagar</option>
+						<option value="1">Pagado</option>
 					</select>
+				</div>
+				<div class="col-sm-2">
+					<button class="btn btn-primary form-control btn-filtro"
+						type="button">Filtrar</button>
 				</div>
 			</div>
 			<div class="form-group row">
@@ -177,45 +158,51 @@
 				</div>
 			</div>
 			<div class="form-group row">
+				<label for="staticText" class="col-sm-2 col-form-label">Servicio</label>
+				<div class="col-sm-4">
+					<select class="custom-select mr-sm-2" id="filtro_servicio"
+						name="filtro_servicio" required>
+						<option value="0">Todos</option>
+						<option th:each="servicio : ${servicios}"
+							th:text="${servicio.nombre}" th:value="${servicio.idServicio}"></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group row">
 				<div class="col-sm-12">
 					<table class="table">
 						<thead class="thead-dark">
 							<tr>
 								<th scope="col" class="text-center">ID</th>
-								<th scope="col" class="text-center">Nombres</th>
-								<th scope="col" class="text-center">Fecha de Nacimiento</th>
-								<th scope="col" class="text-center">DNI</th>
-								<th scope="col" class="text-center">Teléfono</th>
-								<th scope="col" class="text-center">Dirección</th>
+								<th scope="col" class="text-center">Propietario</th>
 								<th scope="col" class="text-center">Departamento</th>
-								<th scope="col" class="text-center">Fecha de visita</th>
-								<th scope="col" class="text-center">Hora Ingreso</th>
-								<th scope="col" class="text-center">Hora Salida (Estimada)</th>
-								<th scope="col" class="text-center">Salida</th>
+								<th scope="col" class="text-center">Mes</th>
+								<th scope="col" class="text-center">Fecha de Emision</th>
+								<th scope="col" class="text-center">Fecha de Pago</th>
+								<th scope="col" class="text-center">Servicio</th>
 								<th scope="col" class="text-center">Estado</th>
 							</tr>
 						</thead>
 						<tbody id="lista-visitas">
-							<tr th:each="bean:${visitas}">
+							<tr th:each="bean:${boletas}">
 
-								<td scope="row" class="text-center" th:text="${bean.idVisita}"></td>
+								<td scope="row" class="text-center" th:text="${bean.idBoleta}"></td>
 								<td scope="row" class="text-center"
-									th:text="${bean.visitante.nombres + ' ' + bean.visitante.apellidos}"></td>
-								<td scope="row" class="text-center" th:text="${bean.visitante.fecha_nacimiento}"></td>
-								<td scope="row" class="text-center" th:text="${bean.visitante.dni}"></td>
-								<td scope="row" class="text-center" th:text="${bean.visitante.telefono}"></td>
-								<td scope="row" class="text-center" th:text="${bean.visitante.direccion}"></td>
+									th:text="${bean.propietario.nombres + ' ' + bean.propietario.apellidos}"></td>
+									<td scope="row" class="text-center" th:text="${bean.propietario.departamento.idDepartamento}"></td>
+								<td scope="row" class="text-center" th:text="${bean.mes+1}"></td>
 								<td scope="row" class="text-center"
-									th:text="${bean.visitante.propietario.departamento.direccion}"></td>
-								<td scope="row" class="text-center" th:text="${#dates.format(bean.fecha_entrada, 'dd-MM-yyyy')}"></td>
-								<td scope="row" class="text-center" th:text="${#dates.format(bean.fecha_entrada, 'HH:mm')}"></td>
-								<td scope="row" class="text-center" th:text="${#dates.format(bean.fecha_salida_estimada, 'HH:mm')}"></td>
-								<td scope="row" class="text-center" th:text="${#dates.format(bean.fecha_salida, 'dd-MM-yyyy HH:mm')}"></td>
+									th:text="${#dates.format(bean.fechaEmision, 'dd-MM-yyyy')}"></td>
+								<td scope="row" class="text-center"
+									th:text="${bean.fechaVencimiento}"></td>
+								<td scope="row" class="text-center"
+									th:text="${bean.servicio.nombre}"></td>
 								<td><span th:if="${bean.estado == 0}"
-									class="btn btn-danger text-center" id="btn-salida"> No salió </span> <span
-									th:if="${bean.estado == 1}" class="btn btn-success text-center"
-									id="btn-salida"> Salió </span></td>
-								<td>
+									class="btn btn-danger text-center" id="btn-pago"> Pagar
+								</span><span th:if="${bean.estado == 1}"
+									class="btn btn-success text-center" id="btn-pago">
+										Pagado </span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -231,30 +218,32 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Hora de
-						Salida</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Hora de Salida</h5>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				
-					<div class="modal-body">
-						<div class="form-group">
-							<label for="recipient-name" class="col-form-label">Hora</label>
-							<input type="text" class="form-control" id="modal-hora" name="hora" readonly>
-						</div>
-						<div class="form-group">
-							<label for="message-text" class="col-form-label modal-comentario">Comentario</label>
-							<textarea class="form-control" id="modal-comentario" required pattern="[\w\W]{1,45}" minlength="1" maxlength="100" ></textarea>
-						</div>
+
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="recipient-name" class="col-form-label">Hora</label> <input
+							type="text" class="form-control" id="modal-hora" name="hora"
+							readonly>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary" id="btn-registrarhora">Registrar</button>
+					<div class="form-group">
+						<label for="message-text" class="col-form-label modal-comentario">Comentario</label>
+						<textarea class="form-control" id="modal-comentario" required
+							pattern="[\w\W]{1,45}" minlength="1" maxlength="100"></textarea>
 					</div>
-				
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary"
+						id="btn-registrarhora">Registrar</button>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -281,53 +270,11 @@
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-	<script th:inline="javascript">
-	function padTo2Digits(num) {
-		  return String(num).padStart(2, '0');
-		}
-	function display_c(){
-		var refresh=10000; // Refresh rate in milli seconds
-		mytime=setTimeout('setTime2()',refresh)
-		}
-	function setTime2(){
-		var date = new Date();
-		console.log(date.getHours());
-		var fecha_actual = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-		var hora_actual = padTo2Digits(date.getHours()) + ':' + padTo2Digits(date.getMinutes());
-		var d = document.getElementById('fecha_visita').valueAsDate = fecha_actual;
-		var h = document.getElementById('hora_ingreso').value = hora_actual;
-		display_c();
-	}
-	$(document).ready( function() {
-		setTime2();
-	});
-	</script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"
+		integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script th:src="@{/js/navbar-js.js}"></script>
-
-	<script th:inline="javascript">
-		$(document).on("click", ".btn-buscar", function() {
-			const dni = document.getElementById("dni-input");
-			const visitante = document.getElementById("visitante-input");
-			$.ajax({
-				url : "/administrador/buscarVisitantePorDni/" + dni.value,
-				type : "GET",
-				dataType : "JSON",
-				success : function(data) {
-					//alert(data.nombres);
-					visitante.value = data.nombres + ' ' + data.apellidos;
-				},
-				error : function() {
-					if (dni.value === "") {
-						//alert("El campo DNI esta vacio.");
-					} else
-						alert("No existe un visitante con ese DNI.");
-				}
-			});
-		});
-	</script>
-	
 
 	<script th:inline="javascript">
 		$(document)
@@ -335,14 +282,18 @@
 						"click",
 						".btn-filtro",
 						function() {
+							//alert('filtro');
 							const dni = document.getElementById("dni-filtro").value;
 							const nombre = document
 									.getElementById("nombre-filtro").value;
 							const estado = document
 									.getElementById("estado-filtro").value;
+							const servicio = document.getElementById("filtro_servicio").value;
 							const listaVisitas = document
 									.getElementById("lista-visitas");
-
+							
+							var idservicio = (servicio > 0) ? servicio : -1; 
+							console.log(idservicio);
 							var est = "";
 							var estadoClass = "";
 
@@ -352,24 +303,25 @@
 							}
 
 							$.ajax({
-										url : "/administrador/buscarVisitaPorDniNombreEstado",
+										url : "/administrador/filtroBoleta",
 										data : {
 											'dni' : dni,
 											'nombre' : nombre,
-											'estado' : estado
+											'estado' : estado,
+											'servicio' : idservicio
 										},
 										type : "GET",
 										contentType: "application/json; charset=utf-8",
 										dataType : "JSON",
 										success : function(data) {
-											//console.log(data);
+											console.log(data);
 											$.each(data,function(index,bean) {
-												
+																
 																if (bean.estado == 0) {
-																	est = "No salio";
+																	est = "Pagar";
 																	estadoClass = "text-center btn btn-danger"
 																} else {
-																	est = "Salio";
+																	est = "Pagado";
 																	estadoClass = "text-center btn btn-success"
 																}
 																;
@@ -379,62 +331,40 @@
 																function padTo2Digits(num) {
 																	  return String(num).padStart(2, '0');
 																	}
-																var fecha = convertTZ(bean.fecha_entrada, "America/Lima");
-																var fecha_salida_estimada = convertTZ(bean.fecha_salida_estimada, "America/Lima");
-																var fecha_salida_s = '';
-																if(bean.fecha_salida != null){
-																	var fecha_salida = convertTZ(bean.fecha_salida, "America/Lima");
-																	fecha_salida.setHours(fecha_salida.getHours() - 5);
-																	fecha_salida_s = padTo2Digits(fecha_salida.getDate())+'-'+padTo2Digits(fecha_salida.getMonth()+1)+'-'+fecha_salida.getFullYear()+' '+padTo2Digits(fecha_salida.getHours())+':'+padTo2Digits(fecha_salida.getMinutes());
-																}
+																var fecha_emision = convertTZ(bean.fechaEmision, "America/Lima");
+																var fecha_pago = convertTZ(bean.fechaVencimiento, "America/Lima");
 																
+																fecha_emision.setHours(fecha_emision.getHours() - 5);
+																fecha_pago.setHours(fecha_pago.getHours() - 5);
 																
-																fecha.setHours(fecha.getHours() - 5);
-																fecha_salida_estimada.setHours(fecha_salida_estimada.getHours() - 5);
-																
-																//console.log(fecha);
-																var fecha_actual = padTo2Digits(fecha.getDate())+'-'+padTo2Digits(fecha.getMonth()+1)+'-'+fecha.getFullYear();
-																var hora_entrada = padTo2Digits(fecha.getHours())+':'+padTo2Digits(fecha.getMinutes());
-																var hora_salida_estimada = padTo2Digits(fecha_salida_estimada.getHours())+':'+padTo2Digits(fecha_salida_estimada.getMinutes());
-																
+																var fechaEmision = padTo2Digits(fecha_emision.getDate())+'-'+padTo2Digits(fecha_emision.getMonth()+1)+'-'+fecha_emision.getFullYear();
+																var fechaVencimiento = padTo2Digits(fecha_pago.getDate())+'-'+padTo2Digits(fecha_pago.getMonth()+1)+'-'+fecha_pago.getFullYear();																
 																$("#lista-visitas").append(
 																				'<tr>'
 																						+ '<td scope="row" class="text-center">'
-																						+ bean.idVisita
+																						+ bean.idBoleta
 																						+ '</td>'
 																						+ '<td scope="row" class="text-center">'
-																						+ bean.visitante.nombres
+																						+ bean.propietario.nombres
 																						+ " "
-																						+ bean.visitante.apellidos
+																						+ bean.propietario.apellidos
 																						+ '</td>'
 																						+ '<td scope="row" class="text-center">'
-																						+ bean.visitante.fecha_nacimiento
+																						+ (bean.propietario.departamento.idDepartamento)
 																						+ '</td>'
 																						+ '<td scope="row" class="text-center">'
-																						+ bean.visitante.dni
+																						+ (bean.mes+1)
 																						+ '</td>'
 																						+ '<td scope="row" class="text-center">'
-																						+ bean.visitante.telefono
+																						+ fechaEmision
 																						+ '</td>'
 																						+ '<td scope="row" class="text-center">'
-																						+ bean.visitante.direccion
+																						+ fechaVencimiento
 																						+ '</td>'
 																						+ '<td scope="row" class="text-center">'
-																						+ bean.propietario.departamento.direccion
+																						+ bean.servicio.nombre
 																						+ '</td>'
-																						+ '<td scope="row" class="text-center">'
-																						+ fecha_actual
-																						+ '</td>'
-																						+ '<td scope="row" class="text-center">'
-																						+ hora_entrada
-																						+ '</td>'
-																						+ '<td scope="row" class="text-center">'
-																						+ hora_salida_estimada
-																						+ '</td>'
-																						+ '<td scope="row" class="text-center">'
-																						+ fecha_salida_s
-																						+ '</td>'
-																						+ '<td scope="row" id="btn-salida" class = "'+estadoClass+'">'
+																						+ '<td scope="row" id="btn-pago" class = "'+estadoClass+'">'
 																						+ est
 																						+ '</td>'
 																						+ '</tr>');
@@ -447,47 +377,24 @@
 						});
 	</script>
 
-	<script th:inline="javascript">
-	function display_c(){
-		var refresh=10000; // Refresh rate in milli seconds
-		mytime=setTimeout('setTime()',refresh)
-	}
-	function setTime(){
-		var fecha = new Date();
-		$("#modal-hora").val(padTo2Digits(fecha.getHours())+':'+padTo2Digits(fecha.getMinutes()));
-		display_c();
-	}
-		$(document).on("click", "#btn-salida", function() {
-			//alert("Salida");
-			function padTo2Digits(num) {
-			return String(num).padStart(2, '0');
-			}
-			
+	<script type="text/javascript">
+		$(document).on("click", "#btn-pago", function() {
 			cod = $(this).parents("tr").find("td")[0].innerHTML;
-			fec_salida = $(this).parents("tr").find("td")[8].innerHTML;
-			setTime();
-			//alert(fec_salida);
-			$("#modalSalida").modal("show");
-			
-			$(document).on("click", "#btn-registrarhora", function() {
-				//alert("Registrar ID : " + cod);
-				comentario = document.getElementById("modal-comentario").value;
-				$.ajax({
-					type : 'PUT' ,
-					url : "/administrador/registrarSalida" ,
-					data : {
-						'idVisita' : cod,
-						'comentario' : comentario
-					},
-					dataType : 'HTML',
-					success : function(data) {
-						//alert("Exito");
-						location.reload();
-					},
-					error : function(e) {
-						alert(e);
-					}
-				});
+			//alert("CODIGO BOLETA : " + cod);
+			$.ajax({
+				type : 'PUT' ,
+				url : "/administrador/pagoBoleta" ,
+				data : {
+					'idBoleta' : cod
+				},
+				dataType : 'HTML',
+				success : function(data) {
+					//alert("Exito");
+					location.reload();
+				},
+				error : function(e) {
+					alert(e);
+				}
 			});
 		});
 	</script>
