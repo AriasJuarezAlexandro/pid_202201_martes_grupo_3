@@ -30,7 +30,7 @@ public class BoletaServiceImpl implements BoletaService{
 	}
 	
 	@Override
-	public Boleta buscarBoletaPorPropietario(int idPropietario , int mes , int idServicio) {
+	public List<Boleta> buscarBoletaPorPropietario(int idPropietario , int mes , int idServicio) {
 		return repository.buscarBoletasPorPropietario(idPropietario, mes , idServicio);
 	}
 
