@@ -1,7 +1,10 @@
 package com.proyecto.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -44,6 +47,11 @@ public class BoletaController {
 		model.addAttribute("boletas", boletaService.listarBoletas());
 		model.addAttribute("servicios", servicioRepository.findAll());
 		model.addAttribute("propietarios", propietarioService.listarPropietarios());
+		
+		
+		
+		
+		
 		return "boleta";
 	}
 	
@@ -51,30 +59,53 @@ public class BoletaController {
 	public String registraBoleta(RedirectAttributes redirect, HttpSession session,
 			@RequestParam("fecha_pago") String fecha_pago,
 			@RequestParam("id_servicio") int id_servicio, @RequestParam("id_propietario") int idPropietario) {
-
+		
+		List<Integer> listaDias = new ArrayList<Integer>();
+		listaDias.add(31);
+		listaDias.add(28);
+		listaDias.add(31);
+		listaDias.add(30);
+		listaDias.add(31);
+		listaDias.add(30);
+		listaDias.add(31);
+		listaDias.add(31);
+		listaDias.add(30);
+		listaDias.add(31);
+		listaDias.add(30);
+		listaDias.add(31);
+		
 		try {
 
-			Date fecha_vencimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fecha_pago);
 			
-			Boleta temp = boletaService.buscarBoletaPorPropietario(idPropietario, fecha_vencimiento.getMonth() , id_servicio);
-			if(temp == null) {
+			List<Boleta> temp = boletaService.buscarBoletaPorPropietario(idPropietario, Integer.parseInt(fecha_pago) , id_servicio);
+			if(temp == null || temp.size() == 0) {
 				Servicio servicio = servicioRepository.findById(id_servicio).get();
 				Propietario propietario = propietarioService.buscarPorId(idPropietario).get();
 				Administrador admin = (Administrador) session.getAttribute("user");
+				
+				//Registrar boleta cada mes
+				for (int i = 0; i < listaDias.size(); i++) {
+					System.out.println("mes "+i + " : "+listaDias.get(i));
+					
+					Date fecha_vencimiento = new SimpleDateFormat("yyyy/MM/dd").parse(fecha_pago+"/"+(i+1)+"/"+listaDias.get(i));
+					System.out.println(fecha_vencimiento);
+					System.out.println("");
+					Boleta obj = new Boleta();
+					obj.setServicio(servicio);
+					obj.setPropietario(propietario);
+					obj.setAdministrador(admin);
+					obj.setMes(fecha_vencimiento.getMonth()+1);
+					obj.setFechaEmision(new Date());
+					obj.setFechaVencimiento(fecha_vencimiento);
+					obj.setEstado(0);
 
-				Boleta obj = new Boleta();
-				obj.setServicio(servicio);
-				obj.setPropietario(propietario);
-				obj.setAdministrador(admin);
-				obj.setMes(fecha_vencimiento.getMonth());
-				obj.setFechaEmision(new Date());
-				obj.setFechaVencimiento(fecha_vencimiento);
-				obj.setEstado(0);
-
-				boletaService.registrarBoleta(obj);
+					boletaService.registrarBoleta(obj);
+				}
+				
+				
 				redirect.addFlashAttribute("mensaje", "Boleta registrada correctamente.");
 			}else {
-				redirect.addFlashAttribute("error", "Boleta del propietario ya registrada con el mismo servicio y en el mismo mes");
+				redirect.addFlashAttribute("error", "Boleta del propietario ya registrada con el mismo servicio y en el mismo año");
 			}
 			
 		} catch (Exception e) {

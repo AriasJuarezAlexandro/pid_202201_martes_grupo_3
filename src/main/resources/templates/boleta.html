@@ -27,7 +27,7 @@
 
 <link rel="stylesheet" th:href="@{/navbar.css}">
 
-<title>Visita</title>
+<title>Boleta</title>
 </head>
 <body>
 
@@ -64,7 +64,10 @@
 					th:href="@{visita}"><i class="fa-solid fa-calendar-days"></i>Visita</a>
 				</li>
 				<li class="nav-item active"><a class="nav-link"
-					th:href="@{boleta}"><i class="fa-solid fa-calendar-days"></i>Boleta</a>
+					th:href="@{boleta}"><i class="fa-solid fa-sack-dollar"></i>Boleta</a>
+				</li>
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{incidente}"><i class="fa-solid fa-fire"></i>Incidente</a>
 				</li>
 				<li class="nav-item exit"><a class="nav-link"
 					href="javascript:void(0);" type="submit" th:href="@{/logout}">
@@ -115,8 +118,8 @@
 				<label for="staticText" class="col-sm-2 col-form-label">Fecha
 					de pago</label>
 				<div class="col-sm-4">
-					<input type="date" class="form-control" name="fecha_pago"
-						id="fecha_pago" required>
+					<input type="number" class="form-control" name="fecha_pago"
+						id="fecha_pago" min="2022" max="2099" step="1" placeholder="Ingrese año de pago" required>
 				</div>
 			</div>
 
@@ -191,7 +194,7 @@
 								<td scope="row" class="text-center"
 									th:text="${bean.propietario.nombres + ' ' + bean.propietario.apellidos}"></td>
 									<td scope="row" class="text-center" th:text="${bean.propietario.departamento.idDepartamento}"></td>
-								<td scope="row" class="text-center" th:text="${bean.mes+1}"></td>
+								<td scope="row" class="text-center" th:text="${bean.mes}"></td>
 								<td scope="row" class="text-center"
 									th:text="${#dates.format(bean.fechaEmision, 'dd-MM-yyyy')}"></td>
 								<td scope="row" class="text-center"
@@ -353,7 +356,7 @@
 																						+ (bean.propietario.departamento.idDepartamento)
 																						+ '</td>'
 																						+ '<td scope="row" class="text-center">'
-																						+ (bean.mes+1)
+																						+ (bean.mes)
 																						+ '</td>'
 																						+ '<td scope="row" class="text-center">'
 																						+ fechaEmision

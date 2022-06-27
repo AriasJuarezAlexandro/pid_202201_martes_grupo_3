@@ -52,6 +52,6 @@ public interface BoletaRepository extends JpaRepository<Boleta, Integer>{
 	@Query("update Boleta set estado = :p_estado where idBoleta = :p_idBoleta")
 	public void pagoBoleta(@Param("p_idBoleta") int id , @Param("p_estado") int estado);
 	
-	@Query("SELECT b from Boleta b where b.propietario.idPropietario = ?1 and b.mes = ?2 and b.servicio.idServicio = ?3")
-	public Boleta buscarBoletasPorPropietario(int idPropietario , int mes , int idServicio);
+	@Query("SELECT b from Boleta b where b.propietario.idPropietario = ?1 and YEAR(b.fechaVencimiento) = ?2 and b.servicio.idServicio = ?3")
+	public List<Boleta> buscarBoletasPorPropietario(int idPropietario , int year , int idServicio);
 }
