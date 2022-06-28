@@ -1,10 +1,22 @@
 package com.proyecto.controller;
 
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.proyecto.entity.Administrador;
+import com.proyecto.entity.Departamento;
+import com.proyecto.entity.Incidente;
+import com.proyecto.entity.TipoIncidente;
 import com.proyecto.repository.DepartamentoRepository;
 import com.proyecto.repository.IncidenteRepository;
 import com.proyecto.repository.TipoIncidenteRepository;
@@ -27,6 +39,52 @@ public class IncidenteController {
 	@Autowired
 	PropietarioService propietarioService;
 	
+	@RequestMapping("/incidente")
+	public String incidentePage(Model model) {
+		model.addAttribute("propietarios", propietarioService.listarPropietarios());
+		model.addAttribute("tipoincidentes", tipoIncidenteRepository.findAll());
+		model.addAttribute("incidentes", incidenteService.listaIncidentes());
+		return "incidente";
+	}
 	
+	@PostMapping(value = "/registrarIncidente")
+	public String registraIncidente(RedirectAttributes redirect , HttpSession session ,
+			@RequestParam("id_departamento") int idDepartamento ,
+			@RequestParam("id_tipoIncidente") int idTipoDepartamento,
+			@RequestParam(value = "comentario" , required = false , defaultValue = "") String comentario) {
+
+		try {
+			
+			List<Incidente> busqueda = incidenteService.validacionIncidente(idDepartamento, idTipoDepartamento);
+			
+			if(busqueda.isEmpty()) {
+				
+				Administrador admin = (Administrador) session.getAttribute("user");
+				Departamento depa = departamentoService.findById(idDepartamento).get();
+				TipoIncidente tipoIncidente = tipoIncidenteRepository.findById(idTipoDepartamento).get();
+				
+				Incidente obj = new Incidente();
+				obj.setDepartamento(depa);
+				obj.setTipoIncidente(tipoIncidente);
+				obj.setAdministrador(admin);
+				obj.setFecha_registro(new Date());
+				obj.setComentario(comentario);
+				obj.setEstado(0);
+				
+				incidenteService.registrarIncidente(obj);
+				redirect.addFlashAttribute("mensaje","Incidente registrado correctamente.");
+			}else {
+				redirect.addFlashAttribute("error","Incidente del departamento previamente registrado sigue sin atender.");
+			}
+			
+
+		} catch (Exception e) {
+			redirect.addFlashAttribute("error","Error al registrar incidente");
+			e.printStackTrace();
+			return "redirect:/administrador/incidente";
+		}
+		
+		return "redirect:/administrador/incidente";
+	}
 	
 }
