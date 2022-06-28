@@ -8,9 +8,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.proyecto.entity.Administrador;
@@ -85,6 +87,29 @@ public class IncidenteController {
 		}
 		
 		return "redirect:/administrador/incidente";
+	}
+	
+	@GetMapping(value = "/filtroIncidente")
+	@ResponseBody
+	public List<Incidente> filtroIncidente(
+			@RequestParam(value = "departamento") int idDepa,
+			@RequestParam(value = "tipo") int idTipo,
+			@RequestParam(value = "estado") int estado) {
+		
+		System.out.println("INFO : " + idDepa + " | " + idTipo + " | " + estado);
+		
+		List<Incidente> temp = null;
+
+		if(idTipo == -1 && estado == -1 && idDepa > 0) temp = incidenteRepository.filtroDepartamento(idDepa);
+		else if(idDepa == -1 && estado == -1 && idTipo > 0) temp = incidenteRepository.filtroTipo(idTipo);
+		else if(idDepa == -1 && idTipo == -1 && estado != -1) temp = incidenteRepository.filtroEstado(estado);
+		else if(estado == -1 && idDepa > 0 && idTipo > 0) temp = incidenteRepository.filtroDepartamentoTipo(idDepa, idTipo);
+		else if(idDepa == -1 && estado > -1 && idTipo > 0) temp = incidenteRepository.filtrTipoEstado(idTipo , estado);
+		else if(idTipo == -1 && estado > -1 && idDepa > 0) temp = incidenteRepository.filtroDepartamentoEstado(idDepa, estado);
+		else if(idDepa == -1 && idTipo == -1 && estado == -1) temp = incidenteService.listaIncidentes();
+		else temp =  incidenteRepository.filtro(idDepa, idTipo, estado);
+		
+		return temp;
 	}
 	
 }
