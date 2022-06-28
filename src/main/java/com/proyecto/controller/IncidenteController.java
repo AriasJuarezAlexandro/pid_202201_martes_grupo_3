@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -85,6 +86,16 @@ public class IncidenteController {
 			e.printStackTrace();
 			return "redirect:/administrador/incidente";
 		}
+		
+		return "redirect:/administrador/incidente";
+	}
+	
+	@PutMapping(value = "/atenderIncidente")
+	public String atenderIncidente(
+			@RequestParam(value = "idIncidente") int idIncidente ,
+			@RequestParam(value = "estado") int estado , RedirectAttributes redirect) {
+		System.out.println("LOG : " + estado);
+		incidenteService.cambiarEstado(idIncidente, estado);
 		
 		return "redirect:/administrador/incidente";
 	}

@@ -22,6 +22,12 @@ public class IncidenteServiceImpl implements IncidenteService{
 	public Incidente registrarIncidente(Incidente incidenteO) {
 		return repository.save(incidenteO);
 	}
+	
+	@Override
+	public void cambiarEstado(int idIncidente, int estado) {
+		repository.atenderIncidente(idIncidente, estado);
+	}
+	
 	@Override
 	public List<Incidente> validacionIncidente(int idIncidente, int idTipoIncidente) {
 		return repository.validacionIncidente(idIncidente, idTipoIncidente);
